@@ -65,14 +65,39 @@ bindingoffset=10mm, top=20mm, bottom=20mm}
 
 \newpage
 
-\section{Opis problemu badawczego}
+\section{Opis projektu}
 
+Projekt realizowany w ramach konkursu \textit{Santander Customer Transaction Prediction}\cite{santanderkaggle}. Celem projektu jest opracowanie jak klasyfikatora, który na podstawie dostępnych danych o konsumencie wskaże, czy dokona on transakcji czy też nie. 
 
 \section{Opis danych}
 
-\section{Przetwarzanie danych}
+Do dyspozycji uczestników konkursu organizator przygotował dwa zanonimizowane zbiory danych: \textit{train.csv} oraz \textit{test.csv}. Oba zbiory danych posiadają po 200 tysięcy wierszy. Każdy wiersz posiada identyfikator \textit{ID\_code} oraz 200 anonimowych cech (\textit{var0, var1 ... var199}). Zbiór \textit{train.csv} posiada dodatkowo kolumnę \textit{target} będącą etykietą, przyjmuje ona wartości $0$ lub $1$. Dane z pliku \textit{train.csv} służą do trenowania i wstępnej oceny jakości modelu. Plik \textit{test.csv} służy do oceny modelu przez organizatora konkursu, klasy dla tego zbioru nie są publicznie znane. Zgłoszeniem do konkursu jest plik zestawiający \textit{ID\_code} każdego rekordu z pliku \textit{test.csv} z jego przewidywaną klasą.
 
-\section{Wyniki}
+
+\subsection{Przetwarzanie i analiza danych}
+
+% liczba danych w każdej z klas
+
+% brakujące dane
+
+\subsubsection{EDA (Exploratory Data Analysis)}
+
+
+
+\subsubsection{PCA (Principal Component Analysis)}
+
+
+
+\section{Ocena modeli}
+
+Sposób oceny modeli został narzucony przez organizatorów konkursu. Ze względu na nierównomierny podział klas, do oceny modeli wykorzystana jest miara AUC, którą można uzyskać poprzez policzenie pola pod krzywą ROC.
+
+
+\section{Modele klasyczne}
+
+\section{Modele niekonwencjonalne}
+
+\section{Wyniki i podsumowanie}
 
 
 \newpage
@@ -80,6 +105,8 @@ bindingoffset=10mm, top=20mm, bottom=20mm}
 \section{Bibliografia}
 \begin{thebibliography}{9}
 
+\bibitem{santanderkaggle}
+\url{https://www.kaggle.com/c/santander-customer-transaction-prediction}
 
 \bibitem{exampple}
   John Example,

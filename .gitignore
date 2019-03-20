@@ -111,3 +111,4 @@ venv.bak/
 *.pdf
 *.bcf
 
+docs/raport.out
