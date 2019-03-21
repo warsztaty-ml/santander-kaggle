@@ -112,3 +112,8 @@ venv.bak/
 *.bcf
 
 docs/raport.out
+
+data/
+target/
+/scripts/*.eps
+/scripts/*.png
