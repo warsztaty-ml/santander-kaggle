@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-def compute_feature_distribution(df1, df2, label1, label2, features):
+def compute_feature_distribution(df1, df2, label1, label2, features, file_name):
     i = 0
     plt.figure()
     fig, ax = plt.subplots(5,5,figsize=(18,22))
@@ -17,7 +17,7 @@ def compute_feature_distribution(df1, df2, label1, label2, features):
         locs, labels = plt.xticks()
         plt.tick_params(axis='x', which='major', labelsize=6, pad=-6)
         plt.tick_params(axis='y', which='major', labelsize=6)
-    plt.savefig('{}/{}.eps'.format('.', 'feature_distribution'), format='eps', dpi=1000)
+    plt.savefig('{}/{}.eps'.format('.', file_name), format='eps', dpi=1000)
 
 plt.style.use('seaborn')
 
@@ -65,4 +65,10 @@ print('Mean std:', train_describe[['std']].min()[0])
 t0 = train.loc[train['target'] == 0]
 t1 = train.loc[train['target'] == 1]
 features = train.columns.values[2:27]
-compute_feature_distribution(t0, t1, '0', '1', features)
+
+print("Computing train set features distribution (0 vs 1)...")
+compute_feature_distribution(t0, t1, '0', '1', features, 'feature_distribution')
+
+print("Computing features distribution (train set vs test set)...")
+compute_feature_distribution(train, test, 'zestaw treningowy', 'zestaw testowy', features, "feature_distribution_train_vs_test")
+

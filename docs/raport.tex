@@ -309,6 +309,7 @@ Eksploracyjne badanie danych jest podstawowym narzêdziem w analizie danych pozwa
 \end{longtable}
 
 Z tabeli \ref{traindescribe} wynika, ¿e odchylenie standardowe du¿ej liczby cech jest znaczne. Kolejn¹ obserwacj¹ jest podobny zakres wartoœci danych ka¿dej cechy. Wszystkie wartoœci ze zbioru treningowego mieszcz¹ siê w zakresie $[-91, 75]$, co jest zaskakuj¹co ma³ym przedzia³em dla tak du¿ej liczby cech. Za to œrednie wartoœci poszczególnych atrybutów s¹ bardzo zró¿nicowane i wynosz¹ od $-16.5$ do $24.5$. Warto zwróciæ uwagê na zmienn¹ o numerze $68$, dla której minimum wynosi 5.018893, a maksimum 5.0469 (odchylenie standardowe: 0.007186). Jest to zmienna o cecha o najmniejszym rozstrzale wartoœci.
+\newline 
 
 Istotny mo¿e byæ równie¿ rozk³ad wartoœci poszczególnych cech w zale¿noœci od klasy.
 Rysunek \ref{featuresDistribution25} przedstawia wizualizacjê tych¿e rozk³adów dla pierwszych 25 cech (w zbiorze treningowym). Wykresy dla wszystkich 200 kolumn znajduj¹ siê w za³¹czonym pliku \textit{AllFeaturesDistribution.png}.
@@ -320,7 +321,18 @@ Rysunek \ref{featuresDistribution25} przedstawia wizualizacjê tych¿e rozk³adów d
 \label{featuresDistribution25}
 \end{figure}
 
-Wnioskuj¹c z omawianych wizualizacji, rozk³ad wartoœci poszczególnych cech jest prawie identyczny w obu klasach. Wykresy niemal¿e pokrywaj¹ siê w wiêkszoœci przypadków. Jest to czynnikiem utrudniaj¹cym zadanie klasyfikacji.
+Wnioskuj¹c z omawianych wizualizacji, rozk³ad wartoœci jest zbli¿ony w obu klasach dla wszystkich rozwa¿anych kolumn. Wykresy niemal¿e pokrywaj¹ siê. Jednak czêœæ cech (np. dla var0, var2, var6 itd.) charakteryzuje siê delikatnymi rozbie¿noœciami. Mo¿na wnioskowaæ, ¿e bêd¹ one szczególnie istotne w procesie klasyfikacji.
+
+Warto te¿ porównaæ rozk³ad cech zbioru treningowego i testowego. Wizualizacja dla pierwszych 25 cech zosta³a przedstawiona na rysunku \ref{features_distribution_train_vs_test}.
+
+\begin{figure}[H]
+\centering 
+\includegraphics[width = 472pt]{feature_distribution_train_vs_test.eps}
+\caption{Rozk³ad wartoœci pierwszych 25 cech w zbiorze treningowym i testowym}
+\label{features_distribution_train_vs_test}
+\end{figure}
+
+Jak mo¿na zauwa¿yæ, zbiory testowy i treningowy s¹ ³udz¹co podobne pod wzglêdem dystrybucji wartoœci poszczególnych zmiennych. Stanowi to du¿¹ zaletê. Prawdopodobnie wykorzystanie informacji z kolumn o najwiêkszych rozbie¿noœciach przy podziale na klasy (w zbiorze treningowym) przyniesie sukces równie¿ w przypadku zbioru testowego.
 
 \subsubsection{PCA (Principal Component Analysis)}
 
