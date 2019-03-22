@@ -89,7 +89,8 @@ Jak widaæ, klasy mocno ró¿ni¹ siê licznoœci¹, co negatywnie wp³ywa na poziom tru
 
 \subsubsection{EDA (Exploratory Data Analysis)}
 
-Eksploracyjne badanie danych jest podstawowym narzêdziem w analizie danych pozwalaj¹cym na szczegó³owy opis, wizualizacjê oraz badanie danych bez koniecznoœci zak³adania hipotez co do tych danych. Jest to w g³ównej mierze metoda oparta o statystykê, a jej wyniki pozwalaj¹ na ukierunkowanie kolejnych badañ na konkretne cechy posiadanych danych. W tablicy \ref{traindescribe} zestawiono dane statystyczne opisuj¹ce ka¿d¹ z cech (kolumny kolejno: nazwa cechy, œrednia, odchylenie standardowe, minimum, kwantyl 25\%, mediana, kwantyl 75\%, maksimum).
+Eksploracyjne badanie danych jest podstawowym narzêdziem w analizie danych pozwalaj¹cym na szczegó³owy opis, wizualizacjê oraz badanie danych bez koniecznoœci zak³adania hipotez co do tych danych. Jest to w g³ównej mierze metoda oparta o statystykê, a jej wyniki pozwalaj¹ na ukierunkowanie kolejnych badañ na konkretne cechy posiadanych danych. 
+\newline W tablicy \ref{traindescribe} zestawiono dane statystyczne opisuj¹ce ka¿d¹ z cech (kolumny kolejno: nazwa cechy, œrednia, odchylenie standardowe, minimum, kwantyl 25\%, mediana, kwantyl 75\%, maksimum) dla zbioru treningowego.
 
 \begin{longtable}{lrrrrrrr}
 \toprule
@@ -307,7 +308,19 @@ Eksploracyjne badanie danych jest podstawowym narzêdziem w analizie danych pozwa
  var\_199 &  -3.326537 &  10.438015 & -38.8528 & -11.208475 &  -2.81955 &   4.836800 &  28.5007 \\
 \end{longtable}
 
-Z tabeli \ref{traindescribe} wynika, ¿e odchylenie standardowe du¿ej liczby cech jest znaczne, co jest dobr¹ w³aœciwoœci¹ dla danych u¿ywanych w uczeniu maszynowym. Kolejn¹ obserwacj¹ jest podobny zakres wartoœci danych ka¿dej cechy. Wszystkie wartoœci ze zbioru treningowego mieszcz¹ siê w zakresie $[-91, 75]$, co jest zaskakuj¹co ma³ym przedzia³em dla tak du¿ej liczby cech. Œrednie wartoœci poszczególnych atrybutów równie¿ s¹ bardzo zró¿nicowane i wynosz¹ od $-16.5$ do $24.5$.
+Z tabeli \ref{traindescribe} wynika, ¿e odchylenie standardowe du¿ej liczby cech jest znaczne. Kolejn¹ obserwacj¹ jest podobny zakres wartoœci danych ka¿dej cechy. Wszystkie wartoœci ze zbioru treningowego mieszcz¹ siê w zakresie $[-91, 75]$, co jest zaskakuj¹co ma³ym przedzia³em dla tak du¿ej liczby cech. Za to œrednie wartoœci poszczególnych atrybutów s¹ bardzo zró¿nicowane i wynosz¹ od $-16.5$ do $24.5$. Warto zwróciæ uwagê na zmienn¹ o numerze $68$, dla której minimum wynosi 5.018893, a maksimum 5.0469 (odchylenie standardowe: 0.007186). Jest to zmienna o cecha o najmniejszym rozstrzale wartoœci.
+
+Istotny mo¿e byæ równie¿ rozk³ad wartoœci poszczególnych cech w zale¿noœci od klasy.
+Rysunek \ref{featuresDistribution25} przedstawia wizualizacjê tych¿e rozk³adów dla pierwszych 25 cech (w zbiorze treningowym). Wykresy dla wszystkich 200 kolumn znajduj¹ siê w za³¹czonym pliku \textit{AllFeaturesDistribution.png}.
+
+\begin{figure}[H]
+\centering 
+\includegraphics[width = 472pt]{feature_distribution.eps}
+\caption{Rozk³ad wartoœci pierwszych 25 cech w podziale na klasy (dotyczy zbioru treningowego)}
+\label{featuresDistribution25}
+\end{figure}
+
+Wnioskuj¹c z omawianych wizualizacji, rozk³ad wartoœci poszczególnych cech jest prawie identyczny w obu klasach. Wykresy niemal¿e pokrywaj¹ siê w wiêkszoœci przypadków. Jest to czynnikiem utrudniaj¹cym zadanie klasyfikacji.
 
 \subsubsection{PCA (Principal Component Analysis)}
 

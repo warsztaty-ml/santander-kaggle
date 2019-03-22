@@ -2,6 +2,23 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
+def compute_feature_distribution(df1, df2, label1, label2, features):
+    i = 0
+    plt.figure()
+    fig, ax = plt.subplots(5,5,figsize=(18,22))
+
+    for feature in features:
+        i += 1
+        print("Computing feature {}. distribution...".format(feature))
+        plt.subplot(5,5,i)
+        sns.kdeplot(df1[feature], bw=0.5,label=label1)
+        sns.kdeplot(df2[feature], bw=0.5,label=label2)
+        plt.xlabel(feature, fontsize=9)
+        locs, labels = plt.xticks()
+        plt.tick_params(axis='x', which='major', labelsize=6, pad=-6)
+        plt.tick_params(axis='y', which='major', labelsize=6)
+    plt.savefig('{}/{}.eps'.format('.', 'feature_distribution'), format='eps', dpi=1000)
+
 plt.style.use('seaborn')
 
 train = pd.read_csv('../data/train.csv')
@@ -43,3 +60,9 @@ print('Mean min:', train_describe[['mean']].min()[0])
 
 print('Mean std:', train_describe[['std']].max()[0])
 print('Mean std:', train_describe[['std']].min()[0])
+
+
+t0 = train.loc[train['target'] == 0]
+t1 = train.loc[train['target'] == 1]
+features = train.columns.values[2:27]
+compute_feature_distribution(t0, t1, '0', '1', features)
