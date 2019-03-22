@@ -31,7 +31,7 @@ bindingoffset=10mm, top=20mm, bottom=20mm}
 \centering
 \begin{tabular}[t]{lcr}
  \includegraphics[width=70pt,height=70pt]{PW} & POLITECHNIKA WARSZAWSKA & \includegraphics[width=70pt,height=70pt]{MiNI}\\
-& WYDZIAÅ MATEMATYKI & \\
+& WYDZIA£ MATEMATYKI & \\
 & I NAUK INFORMACYJNYCH &
 \end{tabular}
 \end{table}
@@ -46,12 +46,12 @@ bindingoffset=10mm, top=20mm, bottom=20mm}
 \\
 \textit{Projekt:} &\textbf {Santander Customer Transaction Prediction} \\
 \\
-\textit{Autorzy:} &\textbf {Mateusz~BieÅ„kowski \newline
-	Katarzyna~GoÅ‚Ä™biewska \newline
+\textit{Autorzy:} &\textbf {Mateusz~Bieñkowski \newline
+	Katarzyna~Go³êbiewska \newline
 	Filip~Grajek \newline
 	Sebastian~Sudra \newline
-	Åukasz~Sznajder \newline
-	Nikodem~WiÅ›niewski \newline 
+	£ukasz~Sznajder \newline
+	Nikodem~Wiœniewski \newline 
  } \\
 \\
 \end{tabular}
@@ -70,26 +70,26 @@ bindingoffset=10mm, top=20mm, bottom=20mm}
 
 \section{Opis projektu}
 
-Projekt realizowany w ramach konkursu \textit{Santander Customer Transaction Prediction}\cite{santanderkaggle}. Celem projektu jest opracowanie jak klasyfikatora, ktÃ³ry na podstawie dostÄ™pnych danych o konsumencie wskaÅ¼e, czy dokona on transakcji czy teÅ¼ nie. 
+Projekt realizowany w ramach konkursu \textit{Santander Customer Transaction Prediction}\cite{santanderkaggle}. Celem projektu jest opracowanie jak klasyfikatora, który na podstawie dostêpnych danych o konsumencie wska¿e, czy dokona on transakcji czy te¿ nie. 
 
 \section{Opis danych}
 
-Do dyspozycji uczestnikÃ³w konkursu organizator przygotowaÅ‚ dwa zanonimizowane zbiory danych: \textit{train.csv} oraz \textit{test.csv}. Oba zbiory danych posiadajÄ… po 200 tysiÄ™cy wierszy. KaÅ¼dy wiersz posiada identyfikator \textit{ID\_code} oraz 200 anonimowych cech (\textit{var0, var1 ... var199}). ZbiÃ³r \textit{train.csv} posiada dodatkowo kolumnÄ™ \textit{target} bÄ™dÄ…cÄ… etykietÄ…, przyjmuje ona wartoÅ›ci $0$ lub $1$. Dane z pliku \textit{train.csv} sÅ‚uÅ¼Ä… do trenowania i wstÄ™pnej oceny jakoÅ›ci modelu. Plik \textit{test.csv} sÅ‚uÅ¼y do oceny modelu przez organizatora konkursu, klasy dla tego zbioru nie sÄ… publicznie znane. ZgÅ‚oszeniem do konkursu jest plik zestawiajÄ…cy \textit{ID\_code} kaÅ¼dego rekordu z pliku \textit{test.csv} z jego przewidywanÄ… klasÄ….
+Do dyspozycji uczestników konkursu organizator przygotowa³ dwa zanonimizowane zbiory danych: \textit{train.csv} oraz \textit{test.csv}. Oba zbiory danych posiadaj¹ po 200 tysiêcy wierszy. Ka¿dy wiersz posiada identyfikator \textit{ID\_code} oraz 200 anonimowych cech (\textit{var0, var1 ... var199}). Zbiór \textit{train.csv} posiada dodatkowo kolumnê \textit{target} bêd¹c¹ etykiet¹, przyjmuje ona wartoœci $0$ lub $1$. Dane z pliku \textit{train.csv} s³u¿¹ do trenowania i wstêpnej oceny jakoœci modelu. Plik \textit{test.csv} s³u¿y do oceny modelu przez organizatora konkursu, klasy dla tego zbioru nie s¹ publicznie znane. Zg³oszeniem do konkursu jest plik zestawiaj¹cy \textit{ID\_code} ka¿dego rekordu z pliku \textit{test.csv} z jego przewidywan¹ klas¹.
 
 
 \subsection{Przetwarzanie i analiza danych}
 
-Przetwarzanie i analiza danych sÄ… czÄ™sto uwaÅ¼ane za najwaÅ¼niejsze narzÄ™dzia w osiÄ…ganiu ponadprzeciÄ™tnych wynikÃ³w w zagadnieniach zwiÄ…zanych ze sztucznÄ… inteligencjÄ…. Przetwarzanie danych naleÅ¼y rozpoczÄ…Ä‡ od sprawdzenia ich integralnoÅ›ci. Przeszukanie wszystkich wierszy obu zbiorÃ³w nie wykazaÅ‚o Å¼adnych brakujÄ…cych pÃ³l. KolejnÄ… waÅ¼nÄ… informacjÄ… jest liczba przykÅ‚adÃ³w w obu klasach. Im bardziej nierÃ³wnomierne sÄ… licznoÅ›ci zbiorÃ³w tym trudniej stworzyÄ‡ model, ktÃ³ry nie bÄ™dzie siÄ™ przeuczaÅ‚ w stronÄ™ wskazywania na liczniejszÄ… klasÄ™. Dla takich problemÃ³w nie moÅ¼na rÃ³wnieÅ¼ korzystaÄ‡ z miary dokÅ‚adnoÅ›ci jakÄ… jest procent prawidÅ‚owych klasyfikacji. W takich przypadkach naleÅ¼y uÅ¼yÄ‡ bardziej zaawansowanych metod porÃ³wnywania modeli klasyfikacyjnych. ZbiÃ³r treningowy jest podzielony na 20098 (10.049\%) konsumentÃ³w, ktÃ³rzy dokonali transakcji oraz 179902 (89.951\%) konsumentÃ³w, ktÃ³rzy nie dokonali transakcji (rysunek \ref{classescount}). Dla zbioru testowego nie jesteÅ›my w stanie okreÅ›liÄ‡ stosunku obu klas ze wzglÄ™du na brak etykiet. 
+Przetwarzanie i analiza danych s¹ czêsto uwa¿ane za najwa¿niejsze narzêdzia w osi¹ganiu ponadprzeciêtnych wyników w zagadnieniach zwi¹zanych ze sztuczn¹ inteligencj¹. Przetwarzanie danych nale¿y rozpocz¹æ od sprawdzenia ich integralnoœci. Przeszukanie wszystkich wierszy obu zbiorów nie wykaza³o ¿adnych brakuj¹cych pól. Kolejn¹ wa¿n¹ informacj¹ jest liczba przyk³adów w obu klasach. Im bardziej nierównomierne s¹ licznoœci zbiorów, tym trudniej stworzyæ model, który nie bêdzie siê przeucza³ w stronê wskazywania na liczniejsz¹ klasê. Dla takich problemów nie mo¿na równie¿ korzystaæ z miary dok³adnoœci jak¹ jest procent prawid³owych klasyfikacji. W takich przypadkach nale¿y u¿yæ bardziej zaawansowanych metod porównywania modeli klasyfikacyjnych, np. wskaŸnika Dice Coefficient. Zbiór treningowy jest podzielony na 20098 (10.049\%) konsumentów, którzy dokonali transakcji oraz 179902 (89.951\%) konsumentów, którzy nie dokonali transakcji (rysunek \ref{classescount}). Dla zbioru testowego nie jesteœmy w stanie okreœliæ stosunku obu klas ze wzglêdu na brak etykiet. 
 \begin{figure}[H]
 \centering \includegraphics[scale=0.7]{classes.eps}
-\caption{Liczba przykÅ‚adÃ³w w kaÅ¼dej z klas}
+\caption{Liczba przyk³adów w ka¿dej z klas}
 \label{classescount}
 \end{figure}
-Jak widaÄ‡ klasy mocno rÃ³Å¼niÄ… siÄ™ licznoÅ›ciÄ… co negatywnie wpÅ‚ywa na poziom trudnoÅ›ci caÅ‚ego zagadnienia.
+Jak widaæ, klasy mocno ró¿ni¹ siê licznoœci¹, co negatywnie wp³ywa na poziom trudnoœci ca³ego zagadnienia.
 
 \subsubsection{EDA (Exploratory Data Analysis)}
 
-Eksploracyjne badanie danych jest podstawowym narzÄ™dziem w analizie danych pozwalajÄ…cym na szczegÃ³Å‚owy opis, wizualizacjÄ™ oraz badanie danych bez koniecznoÅ›ci zakÅ‚adania hipotez co do tych danych. Jest to w gÅ‚Ã³wnej mierze metoda oparta o statystykÄ™, a jej wyniki pozwalajÄ… na ukierunkowanie kolejnych badaÅ„ na konkretne cechy posiadanych danych. W tablicy \ref{traindescribe} widzimy dane statystyczne opisujÄ…ce kaÅ¼dÄ… z cech (kolumny kolejno: nazwa cechy, Å›rednia, odchylenie standardowe, minimum, kwantyl 25\%, mediana, kwantyl 75\%, maksimum).
+Eksploracyjne badanie danych jest podstawowym narzêdziem w analizie danych pozwalaj¹cym na szczegó³owy opis, wizualizacjê oraz badanie danych bez koniecznoœci zak³adania hipotez co do tych danych. Jest to w g³ównej mierze metoda oparta o statystykê, a jej wyniki pozwalaj¹ na ukierunkowanie kolejnych badañ na konkretne cechy posiadanych danych. W tablicy \ref{traindescribe} zestawiono dane statystyczne opisuj¹ce ka¿d¹ z cech (kolumny kolejno: nazwa cechy, œrednia, odchylenie standardowe, minimum, kwantyl 25\%, mediana, kwantyl 75\%, maksimum).
 
 \begin{longtable}{lrrrrrrr}
 \toprule
@@ -307,7 +307,7 @@ Eksploracyjne badanie danych jest podstawowym narzÄ™dziem w analizie danych pozw
  var\_199 &  -3.326537 &  10.438015 & -38.8528 & -11.208475 &  -2.81955 &   4.836800 &  28.5007 \\
 \end{longtable}
 
-PatrzÄ…c na dane z tablicy \ref{traindescribe} widaÄ‡ Å¼e odchylenie standardowe duÅ¼ej liczby cech jest znaczne, co jest dobrÄ… wÅ‚aÅ›ciwoÅ›ciÄ… dla danych uÅ¼ywanych w uczeniu maszynowym. Kolejnym wnioskiem jest podobny zakres wartoÅ›ci danych kaÅ¼dej cechy. Wszystkie wartoÅ›ci ze zbioru treningowego mieszczÄ… siÄ™ w zakresie $[-91, 75]$, co jest zaskakujÄ…co maÅ‚ym zakresem dla tak duÅ¼ej liczby cech. Åšrednie wartoÅ›ci poszczegÃ³lnych atrybutÃ³w rÃ³wnieÅ¼ sÄ… bardzo zrÃ³Å¼nicowane i wynoszÄ… od $-16.5$ do $24.5$.
+Z tabeli \ref{traindescribe} wynika, ¿e odchylenie standardowe du¿ej liczby cech jest znaczne, co jest dobr¹ w³aœciwoœci¹ dla danych u¿ywanych w uczeniu maszynowym. Kolejn¹ obserwacj¹ jest podobny zakres wartoœci danych ka¿dej cechy. Wszystkie wartoœci ze zbioru treningowego mieszcz¹ siê w zakresie $[-91, 75]$, co jest zaskakuj¹co ma³ym przedzia³em dla tak du¿ej liczby cech. Œrednie wartoœci poszczególnych atrybutów równie¿ s¹ bardzo zró¿nicowane i wynosz¹ od $-16.5$ do $24.5$.
 
 \subsubsection{PCA (Principal Component Analysis)}
 
@@ -315,7 +315,7 @@ PatrzÄ…c na dane z tablicy \ref{traindescribe} widaÄ‡ Å¼e odchylenie standardowe
 
 \section{Ocena modeli}
 
-SposÃ³b oceny modeli zostaÅ‚ narzucony przez organizatorÃ³w konkursu. Ze wzglÄ™du na nierÃ³wnomierny podziaÅ‚ klas, do oceny modeli wykorzystana jest miara AUC, ktÃ³rÄ… moÅ¼na uzyskaÄ‡ poprzez policzenie pola pod krzywÄ… ROC.
+Sposób oceny modeli zosta³ narzucony przez organizatorów konkursu. Ze wzglêdu na nierównomierny podzia³ klas, do oceny modeli wykorzystana jest miara AUC, któr¹ mo¿na uzyskaæ poprzez policzenie pola pod krzyw¹ ROC.
 
 
 \section{Modele klasyczne}
