@@ -119,3 +119,6 @@ target/
 /scripts/*.png
 /.vs
 /scripts/.vs
+
+# Binary model files
+*.model
