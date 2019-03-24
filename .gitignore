@@ -117,3 +117,6 @@ data/
 target/
 /scripts/*.eps
 /scripts/*.png
+
+#binary model files
+*.model
