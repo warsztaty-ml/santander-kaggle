@@ -117,3 +117,4 @@ data/
 target/
 /scripts/*.eps
 /scripts/*.png
+/.vs
