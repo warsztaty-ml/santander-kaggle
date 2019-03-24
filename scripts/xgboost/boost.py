@@ -3,6 +3,7 @@ import xgboost as xgb
 import numpy as np
 import pandas as pd
 import argparse
+from sklearn.model_selection import train_test_split
 
 
 def args():
@@ -10,38 +11,50 @@ def args():
     """
     parser = argparse.ArgumentParser(description='Performs binary classification using the xgboost algorithm')
 
-    parser.add_argument('train_data', help='Train data csv', type=str)
-    parser.add_argument('test_data', help='Test data csv', type=str)
+    parser.add_argument('input_data', help='Input data csv', type=str)
+    parser.add_argument('--seed', help='Random seed', default=None, type=int)
+    parser.add_argument('--infer', help='Do inference, not training', action='store_true')
+    parser.add_argument('--ratio', help='Train/test split ratio', default=0.8, type=float)
 
     args = parser.parse_args()
-    return args.train_data, args.test_data
+    print(args)
+    return args.input_data, args.seed, args.infer, args.ratio
 
 
-def load_csv(path, is_train=True):
-    """Loads and returns csv file at the given path as a xgb matrix
-    
-    Arguments:
-        path        -- path of the csv file that is loaded
-        is_train  -- information whether the given file is a training file and label data needs to be loaded
-    
-    Returns:
-        xgb.DMatrix -- matrix with the loaded data
-    """
-
+def load_csv(path, train_test_ratio, seed, load_labels):
     df = pd.read_csv(path)
-    if is_train:
+    if load_labels:
         label = df.loc[:, 'target']
         data = df.loc[:, 'var_0':]
-        return xgb.DMatrix(data=data, label=label)
+        train_x, test_x, train_y, test_y =  train_test_split(data, label, train_size=train_test_ratio, random_state=seed)
+        return (xgb.DMatrix(data=train_x, label=train_y), xgb.DMatrix(data=test_x, label=test_y))
     else:
         data = df.loc[:, 'var_0':]
         return xgb.DMatrix(data=data)
+        
 
 def main():
-    train_data_path, test_data_path = args()
+    input_data_path, seed, do_infer, train_test_ratio = args()
 
-    train_data = load_csv(train_data_path)
-    test_data = load_csv(test_data_path, is_train=False)
+    input_data = load_csv(input_data_path, train_test_ratio, seed, ~do_infer)
+
+    if(do_infer):
+        pass
+    else:
+        train, test = input_data
+        param = {'max_depth':2, 'eta':1, 'silent':1, 'objective':'binary:logistic'}
+
+        watchlist = [(test, 'eval'), (train, 'train')]
+        num_round = 2
+
+        bst = xgb.train(param, train, num_round, watchlist)
+
+        preds = bst.predict(test)
+        labels = test.get_label()
+        print('error=%f' % (sum(1 for i in range(len(preds)) if int(preds[i] > 0.5) != labels[i]) / float(len(preds))))
+
+
+    # train_data = load_csv(train_data_path)
 
 
 
