@@ -118,3 +118,4 @@ target/
 /scripts/*.eps
 /scripts/*.png
 /.vs
+/scripts/.vs
