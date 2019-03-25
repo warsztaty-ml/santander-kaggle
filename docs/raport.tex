@@ -337,7 +337,17 @@ Jak mo¿na zauwa¿yæ, zbiory testowy i treningowy s¹ ³udz¹co podobne pod wzglêdem 
 \subsubsection{PCA (Principal Component Analysis)}
 PCA sciœle wi¹¿e sie z metodami wyboru cech i algorytmami które to realizuj¹.
 Dane sk³adaj¹ siê z 200 cech liczbowych, dlatego warto sprawdziæ czy wszystkie wprowadzaj¹ now¹ informacjê. Mo¿e siê tak zda¿yæ, ¿e niektóre z tych cech s¹ ze sob¹ skorelowane na tyle, ¿e mo¿na niektóre z nich pomin¹æ w modelu nie trac¹c na jego jakoœci. Ponad to mo¿e siê tak zda¿yæ, ¿e u¿ycie wszystkich dostêpnych cech mo¿e daæ w rezultacie gorsze wyniki ni¿ u¿ycie podzbioru zbioru cech. W celu zbadania, które z dostêpnych cech maj¹ istotny wp³yw na dany problem przeprowadza siê analizê PCA. Celem takiej analizy jest znalezienie zbioru cech, których u¿ycie zmaksymalizuje jakoœæ modelu przy jednoczesnym zminimalizowaniu zbioru cech u¿ytych w danym problemie.
+\newline
+Na poni¿ej zosta³a zaprezentowana macierz korelacji cech zbioru testowego.
+\begin{figure}[H]
+\centering 
+\includegraphics[width = 472pt]{feature_correlation_matrix}
+\caption{Macierz korelacji cech w zbiorze testowym}
+\label{feature_correlation_matrix}
+\end{figure}
 
+Z powy¿szego wykresu mo¿emy odczytaæ to ¿e cechy nie s¹ ze sob¹ skorelowane lub s¹ w bardzo ma³ym stopniu. 
+Taka informacja nie pozwala nam ograniczyæ wymiarowoœci problemu poniewa¿ na wykresie widzimy, ¿e potencjalnie ka¿da cecha wnosi coœ nowego i mo¿e mieæ istotny wp³yw na jakoœæ przysz³ego modelu.
 
 
 \section{Ocena modeli}

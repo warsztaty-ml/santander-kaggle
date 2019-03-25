@@ -118,5 +118,4 @@ target/
 /scripts/*.eps
 /scripts/*.png
 /.vs
-#binary model files
-*.model
+/scripts/.vs

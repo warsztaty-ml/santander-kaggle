@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{35d7f529-ecd4-4dbe-8307-73a5e6c79acf}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>data_checks.py</StartupFile>
+    <StartupFile>pca_analyze.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -20,6 +20,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="data_checks.py" />
+    <Compile Include="pca_analyze.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>
