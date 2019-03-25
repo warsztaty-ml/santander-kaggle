@@ -24,8 +24,6 @@ target = train['target']
 train = train.drop(["ID_code", "target"], axis=1)
 scaler = StandardScaler()
 train_scaled = scaler.fit_transform(train)         
-PCA_train_x = PCA(2).fit_transform(train_scaled)
-plt.scatter(PCA_train_x[:, 0], PCA_train_x[:, 1], c=target, cmap="copper_r")
-plt.axis('off')
-plt.colorbar()
-plt.show()
+PCA_train_x = PCA(.95).fit_transform(train_scaled)
+
+print(PCA_train_x.shape)

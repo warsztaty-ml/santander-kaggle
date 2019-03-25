@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{35d7f529-ecd4-4dbe-8307-73a5e6c79acf}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>pca_analyze.py</StartupFile>
+    <StartupFile>data_checks.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
