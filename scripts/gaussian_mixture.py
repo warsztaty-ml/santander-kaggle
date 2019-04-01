@@ -5,10 +5,12 @@ from sklearn import mixture
 from sklearn.base import BaseEstimator, ClassifierMixin
 from scipy.special import logsumexp
 from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import train_test_split
 import processing
 
 DATA_DIR = '../data/'
 IS_UNDERSAMPLED = True
+IS_OVERSAMPLED = False
 
 IS_GRID_SEARCH = True
 IS_TRAINING = True
@@ -34,7 +36,7 @@ class GaussMixNaiveBayes(BaseEstimator, ClassifierMixin):
         self.log_prob_Xi_on_Y = [[mixture.GaussianMixture(n_components=self.component_number, reg_covar=self.reg_covar)
                                   .fit(x[y == i, j:j + 1])
                                   .score_samples for j in range(x.shape[1])]
-                                    for i in range(len(self.log_probY))]
+                                  for i in range(len(self.log_probY))]
         print("Training finished")
 
     def predict_proba(self, x):
@@ -52,10 +54,7 @@ class GaussMixNaiveBayes(BaseEstimator, ClassifierMixin):
         return self.predict_proba(x).argmax(axis=1)
 
 
-clf = GaussMixNaiveBayes(component_number=component_numbers[0], reg_covar=reg_covars[0])
-
-
-def load_and_process_data(is_training):
+def load_and_process_data(is_training, is_undersampled, is_oversampled):
     if is_training:
         print("Loading train data")
         data = pd.read_csv(DATA_DIR + 'train.csv')
@@ -63,10 +62,14 @@ def load_and_process_data(is_training):
         print("Loading test data")
         data = pd.read_csv(DATA_DIR + 'test.csv')
 
-    if IS_UNDERSAMPLED and is_training:
-        x_data, y_data, col_nr = processing.data_preprocessing_with_undersampled(data, True)
+    if is_undersampled:
+        x_data, y_data, col_nr = processing.data_preprocessing_with_undersampled(data, is_training)
     else:
-        x_data, y_data, col_nr = processing.data_preprocessing(data, is_training)
+        if is_oversampled:
+            # TODO
+            x_data, y_data, col_nr = processing.data_preprocessing(data, is_training)
+        else:
+            x_data, y_data, col_nr = processing.data_preprocessing(data, is_training)
 
     x_data = x_data.values.astype('float64')
     y_data = y_data.astype('int32')
@@ -74,23 +77,29 @@ def load_and_process_data(is_training):
 
 
 def hyperparameter_grid_search():
-    global clf
-    x_data, y_data, col_nr = load_and_process_data(True)
+    x_data, y_data, _ = load_and_process_data(True, IS_UNDERSAMPLED, IS_OVERSAMPLED)
+    if IS_UNDERSAMPLED:
+        x_train = x_data
+        y_train = y_data
+        x_val, y_val, _ = load_and_process_data(True, False, False)
+    else:
+        x_train, x_val, y_train, y_val = train_test_split(x_data, y_data, test_size=0.1, random_state=1)
 
-    col_names = ['component_number', 'reg_covar', 'AUC']
+    col_names = ['component_number', 'reg_covar', 'AUC_train', 'AUC_val']
     rows = []
 
     for cn, reg_cov in itertools.product(component_numbers, reg_covars):
-            clf = GaussMixNaiveBayes(component_number=cn, reg_covar=reg_cov)
-            clf.fit(x_data, y_data)
-            auc = roc_auc_score(y_data, clf.predict_proba(x_data)[:, 1])
+        clf = GaussMixNaiveBayes(component_number=cn, reg_covar=reg_cov)
+        clf.fit(x_train, y_train)
+        auc_train = roc_auc_score(y_train, clf.predict_proba(x_train)[:, 1])
+        auc_val = roc_auc_score(y_val, clf.predict_proba(x_val)[:, 1])
 
-            print('component number: {}, reg_covar: {}, auc: {}'.format(cn, reg_cov, auc))
-            rows.append([cn, reg_cov, auc])
-
+        print('component number: {}, reg_covar: {}, train auc: {}, val auc: {}'
+              .format(cn, reg_cov, auc_train, auc_val))
+        rows.append([cn, reg_cov, auc_train, auc_val])
 
     search_results = pd.DataFrame(data=rows, columns=col_names)
-    search_results = search_results.sort_values(by=['AUC'], ascending=False)
+    search_results = search_results.sort_values(by=['AUC_val'], ascending=False)
 
     search_results.to_csv('{}gauss_mix_grid_search.csv'.format(DATA_DIR), index=False)
 
@@ -99,17 +108,15 @@ def main():
     if IS_GRID_SEARCH:
         hyperparameter_grid_search()
     else:
-        x_data, y_data, col_nr = load_and_process_data(IS_TRAINING)
-        if IS_TRAINING:
-            clf.fit(x_data, y_data)
-            print('AUC: {}'.format(roc_auc_score(y_data, clf.predict_proba(x_data)[:, 1])))
-        else:
-            x_train, y_train, col_nr = load_and_process_data(True)
-            clf.fit(x_train, y_train)
+        clf = GaussMixNaiveBayes(component_number=component_numbers[0], reg_covar=reg_covars[0])
+        x_train, y_train, _ = load_and_process_data(True, IS_UNDERSAMPLED, IS_OVERSAMPLED)
+        clf.fit(x_train, y_train)
+        print('Training AUC: {}'.format(roc_auc_score(y_train, clf.predict_proba(x_train)[:, 1])))
+        if not IS_TRAINING:
+            x_test, _, _ = load_and_process_data(False, False, False)
+            pred = clf.predict_proba(x_test)[:, 1]
 
-            pred = clf.predict_proba(x_data)[:, 1]
-
-            id_codes = ['test_{}'.format(i) for i in range(x_data.shape[0])]
+            id_codes = ['test_{}'.format(i) for i in range(x_test.shape[0])]
             df = pd.DataFrame(data=id_codes, columns=["ID_code"])
             results = processing.data_postprocessing(df, pred)
 
