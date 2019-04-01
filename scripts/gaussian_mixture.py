@@ -9,14 +9,17 @@ from sklearn.model_selection import train_test_split
 import processing
 
 DATA_DIR = '../data/'
-IS_UNDERSAMPLED = True
-IS_OVERSAMPLED = False
+IS_UNDERSAMPLED = False
+IS_OVERSAMPLED = True
 
 IS_GRID_SEARCH = True
 IS_TRAINING = True
 
+# component_numbers = [15]
+# reg_covars = [0.01]
+
 component_numbers = [5, 10, 15, 20]
-reg_covars = [1e-2, 1e-3, 1e-5, 1e-6]
+reg_covars = [1e-2, 1e-4]
 
 
 # using Bayes' theorem
@@ -67,12 +70,13 @@ def load_and_process_data(is_training, is_undersampled, is_oversampled):
     else:
         if is_oversampled:
             # TODO
-            x_data, y_data, col_nr = processing.data_preprocessing(data, is_training)
+            x_data, y_data, col_nr = processing.data_preprocessing_with_oversampled(data, is_training)
         else:
             x_data, y_data, col_nr = processing.data_preprocessing(data, is_training)
 
     x_data = x_data.values.astype('float64')
-    y_data = y_data.astype('int32')
+    if is_training:
+        y_data = y_data.astype('int32')
     return x_data, y_data, col_nr
 
 
@@ -115,6 +119,7 @@ def main():
         if not IS_TRAINING:
             x_test, _, _ = load_and_process_data(False, False, False)
             pred = clf.predict_proba(x_test)[:, 1]
+            pred = np.round(pred)
 
             id_codes = ['test_{}'.format(i) for i in range(x_test.shape[0])]
             df = pd.DataFrame(data=id_codes, columns=["ID_code"])
