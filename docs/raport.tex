@@ -346,11 +346,27 @@ Na poni¿ej zosta³a zaprezentowana macierz korelacji cech zbioru testowego.
 \label{feature_correlation_matrix}
 \end{figure}
 
-Z powy¿szego wykresu mo¿emy odczytaæ to ¿e cechy nie s¹ ze sob¹ skorelowane lub s¹ w bardzo ma³ym stopniu. 
+Z powy¿szego wykresu mo¿emy odczytaæ to ¿e cechy nie s¹ ze sob¹ skorelowane lub s¹ w bardzo ma³ym stopniu. \\
+\\
+\begin{tabular}{llr}
+   &   &        Wartoœæ korelacji \\
+var\_75 & var\_139 &  0.009868 \\
+var\_96 & var\_143 &  0.008829 \\
+var\_31 & var\_132 &  0.008714 \\
+var\_2 & var\_164 &  0.008614 \\
+var\_122 & var\_164 &  0.008513 \\
+var\_36 & var\_175 &  0.008424 \\
+var\_103 & var\_110 &  0.008405 \\
+var\_40 & var\_163 &  0.008335 \\
+var\_19 & var\_187 &  0.008201 \\
+var\_92 & var\_164 &  0.008058 \\
+\end{tabular}
+
+Powy¿sza tabela przedstawiaj¹ca 10 najbardziej skorelowanych cech w zbiorze testowym upewnia nas, ¿e wygl¹d macie¿y korelacji przedstawionej na rysunku \ref{feature_correlation_matrix} to nie b³¹d, a jedynie fakt, ¿e cechy s¹ od siebie niezale¿ne.
 Taka informacja nie pozwala nam na odrzuceniu niektórych kolumn, poniewa¿ na wykresie widzimy, ¿e potencjalnie ka¿da cecha wnosi coœ nowego i mo¿e mieæ istotny wp³yw na jakoœæ przysz³ego modelu.
 \newline
 Przy u¿yciu dostêpnych bibliotek takich jak "sklearn" w jêzyku Python mo¿na wykonaæ redukcjê wymiarowoœci problemu przy pomocy dedytkowanej do tego klasy "PCA". Przy jej pomocy jesteœmy w stanie zredukowaæ praktycznie dowolnie wymiar zadania, wiêkszym lub miejszym kosztem.
-Na przyk³ad przy zachowaniu 95% wariancji dostêpny w bibiotece algorytm redukuje wymiar do 190 cech, co jeszcze bardziej pokazuje, ¿e ka¿da cecha mo¿e mieæ istotny wp³yw na wynik (liniowa zale¿noœæ zachowania wariancji do iloœci cech). Jednak aby siê o tym przekonaæ w 100-u procentach nie zbêdne bêd¹ testy na konkretnych modelach i algorytmach wybranych do rozwi¹zania tego problemu.
+Na przyk³ad przy zachowaniu 95\% wariancji dostêpny w bibiotece algorytm redukuje wymiar do 190 cech, co jeszcze bardziej pokazuje, ¿e ka¿da cecha mo¿e mieæ istotny wp³yw na wynik (liniowa zale¿noœæ zachowania wariancji do iloœci cech). Jednak aby siê o tym przekonaæ w 100-u procentach nie zbêdne bêd¹ testy na konkretnych modelach i algorytmach wybranych do rozwi¹zania tego problemu.
 
 \section{Ocena modeli}
 
