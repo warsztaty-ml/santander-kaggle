@@ -4,6 +4,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 df = pd.read_csv('../data/test.csv')
+df = df.drop(columns=['ID_code'])
+def get_redundant_pairs(df):
+    '''Get diagonal and lower triangular pairs of correlation matrix'''
+    pairs_to_drop = set()
+    cols = df.columns
+    for i in range(0, df.shape[1]):
+        for j in range(0, i+1):
+            pairs_to_drop.add((cols[i], cols[j]))
+    return pairs_to_drop
+
+def get_top_abs_correlations(df, n=5):
+    au_corr = df.corr().abs().unstack()
+    labels_to_drop = get_redundant_pairs(df)
+    au_corr = au_corr.drop(labels=labels_to_drop).sort_values(ascending=False)
+    return au_corr[0:n]
+
 
 ##Corr Matrix
 #corr = df.corr()
@@ -14,16 +30,25 @@ df = pd.read_csv('../data/test.csv')
 #            square=True, ax=ax)
 
 #plt.show()
-##End Corr Matrix
+#plt.clf()
+
+print("Top Absolute Correlations")
+
+res = get_top_abs_correlations(df, 10)
+
+f= open("../docs/mostcorrelatedfeatures.txt","w+")
+f.write(pd.DataFrame(res).to_latex())
+f.close()
+#End Corr Matrix
 
 
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
-train = pd.read_csv('../data/train.csv')
-target = train['target']
-train = train.drop(["ID_code", "target"], axis=1)
-scaler = StandardScaler()
-train_scaled = scaler.fit_transform(train)         
-PCA_train_x = PCA(.95).fit_transform(train_scaled)
+#from sklearn.decomposition import PCA
+#from sklearn.preprocessing import StandardScaler
+#train = pd.read_csv('../data/train.csv')
+#target = train['target']
+#train = train.drop(["ID_code", "target"], axis=1)
+#scaler = StandardScaler()
+#train_scaled = scaler.fit_transform(train)         
+#PCA_train_x = PCA(.95).fit_transform(train_scaled)
 
-print(PCA_train_x.shape)
+#print(PCA_train_x.shape)
