@@ -9,11 +9,12 @@ from imblearn.over_sampling import RandomOverSampler
 class DataProcessor():
     """Refactor of processing.py to reuse scaler from train data when scaling test data
     """
-    def __init__(self, train_data):
+    def __init__(self, train_data, **kwargs):
         """Constructor, used as a base for using the builder methods
         
         Arguments:
             train_data  -- Dataframe with full training data without any preprocessing done
+            labels -- Data labels in kwargs for convenience when we have data and labels seperate
         """
 
         self.target = 'target'
@@ -23,6 +24,8 @@ class DataProcessor():
         self.sampler = None
 
         self.train_data = self.__remove_columns(train_data, self.id_column)
+        if "labels" in kwargs:
+            self.train_data[self.target] = kwargs["labels"]
 
 
     def with_scaling(self):
@@ -78,17 +81,20 @@ class DataProcessor():
 
         return X, y, len(columns)
 
-    def process_data(self, data):
+    def process_data(self, data, **kwargs):
         """Performs enabled data processing tasks for a given dataset. This is used for example after splitting training data into train/val datasets,
         then this method can be used to process the val dataset.
 
         Arguments:
             data -- Dataframe with full data without any preprocessing done. Should also have labels.
+            labels -- Data labels in kwargs for convenience when we have data and labels seperate
         
         Returns:
             DataFrame with processed data + array with labels + input size (number of columns of processed data without target or ID columns)
         """
         data = self.__remove_columns(data, self.id_column)
+        if "labels" in kwargs:
+            data[self.target] = kwargs["labels"]
         X, y = self.__xy_split(data)
         columns = X.columns
 
