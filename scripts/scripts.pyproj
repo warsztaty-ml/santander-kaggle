@@ -19,8 +19,13 @@
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="best_features.py" />
     <Compile Include="data_checks.py" />
+    <Compile Include="kernel_nnmodel.py" />
     <Compile Include="pca_analyze.py" />
+    <Compile Include="processing.py" />
+    <Compile Include="svr.py" />
+    <Compile Include="XGBoost.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>
