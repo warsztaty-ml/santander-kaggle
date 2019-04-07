@@ -31,7 +31,7 @@ bindingoffset=10mm, top=20mm, bottom=20mm}
 \centering
 \begin{tabular}[t]{lcr}
  \includegraphics[width=70pt,height=70pt]{PW} & POLITECHNIKA WARSZAWSKA & \includegraphics[width=70pt,height=70pt]{MiNI}\\
-& WYDZIAL MATEMATYKI & \\
+& WYDZIAŁ MATEMATYKI & \\
 & I NAUK INFORMACYJNYCH &
 \end{tabular}
 \end{table}
@@ -46,12 +46,12 @@ bindingoffset=10mm, top=20mm, bottom=20mm}
 \\
 \textit{Projekt:} &\textbf {Santander Customer Transaction Prediction} \\
 \\
-\textit{Autorzy:} &\textbf {Mateusz~Bienkowski \newline
-	Katarzyna~Golebiewska \newline
+\textit{Autorzy:} &\textbf {Mateusz~Bieńkowski \newline
+	Katarzyna~Gołębiewska \newline
 	Filip~Grajek \newline
 	Sebastian~Sudra \newline
-	Lukasz~Sznajder \newline
-	Nikodem~Wisniewski \newline 
+	Łukasz~Sznajder \newline
+	Nikodem~Wiśniewski \newline 
  } \\
 \\
 \end{tabular}
@@ -70,27 +70,27 @@ bindingoffset=10mm, top=20mm, bottom=20mm}
 
 \section{Opis projektu}
 
-Projekt realizowany w ramach konkursu \textit{Santander Customer Transaction Prediction}\cite{santanderkaggle}. Celem projektu jest opracowanie jak klasyfikatora, kt�ry na podstawie dostepnych danych o konsumencie wska�e, czy dokona on transakcji czy te� nie. 
+Projekt realizowany w ramach konkursu \textit{Santander Customer Transaction Prediction}\cite{santanderkaggle}. Celem projektu jest opracowanie jak klasyfikatora, który na podstawie dostępnych danych o konsumencie wskaże, czy dokona on transakcji czy też nie. 
 
 \section{Opis danych}
 
-Do dyspozycji uczestnik�w konkursu organizator przygotowal dwa zanonimizowane zbiory danych: \textit{train.csv} oraz \textit{test.csv}. Oba zbiory danych posiadaja po 200 tysiecy wierszy. Ka�dy wiersz posiada identyfikator \textit{ID\_code} oraz 200 anonimowych cech (\textit{var0, var1 ... var199}). Zbi�r \textit{train.csv} posiada dodatkowo kolumne \textit{target} bedaca etykieta, przyjmuje ona wartosci $0$ lub $1$. Dane z pliku \textit{train.csv} slu�a do trenowania i wstepnej oceny jakosci modelu. Plik \textit{test.csv} slu�y do oceny modelu przez organizatora konkursu, klasy dla tego zbioru nie sa publicznie znane. Zgloszeniem do konkursu jest plik zestawiajacy \textit{ID\_code} ka�dego rekordu z pliku \textit{test.csv} z jego przewidywana klasa.
+Do dyspozycji uczestników konkursu organizator przygotował dwa zanonimizowane zbiory danych: \textit{train.csv} oraz \textit{test.csv}. Oba zbiory danych posiadają po 200 tysięcy wierszy. Każdy wiersz posiada identyfikator \textit{ID\_code} oraz 200 anonimowych cech (\textit{var0, var1 ... var199}). Zbiór \textit{train.csv} posiada dodatkowo kolumnę \textit{target} będącą etykietą, przyjmuje ona wartości $0$ lub $1$. Dane z pliku \textit{train.csv} służą do trenowania i wstępnej oceny jakości modelu. Plik \textit{test.csv} służy do oceny modelu przez organizatora konkursu, klasy dla tego zbioru nie są publicznie znane. Zgłoszeniem do konkursu jest plik zestawiający \textit{ID\_code} każdego rekordu z pliku \textit{test.csv} z jego przewidywaną klasą.
 
 
 \subsection{Przetwarzanie i analiza danych}
 
-Przetwarzanie i analiza danych sa czesto uwa�ane za najwa�niejsze narzedzia w osiaganiu ponadprzecietnych wynik�w w zagadnieniach zwiazanych ze sztuczna inteligencja. Przetwarzanie danych nale�y rozpoczac od sprawdzenia ich integralnosci. Przeszukanie wszystkich wierszy obu zbior�w nie wykazalo �adnych brakujacych p�l. Kolejna wa�na informacja jest liczba przyklad�w w obu klasach. Im bardziej nier�wnomierne sa licznosci zbior�w, tym trudniej stworzyc model, kt�ry nie bedzie sie przeuczal w strone wskazywania na liczniejsza klase. Dla takich problem�w nie mo�na r�wnie� korzystac z miary dokladnosci jaka jest procent prawidlowych klasyfikacji. W takich przypadkach nale�y u�yc bardziej zaawansowanych metod por�wnywania modeli klasyfikacyjnych, np. wskaznika Dice Coefficient. Zbi�r treningowy jest podzielony na 20098 (10.049\%) konsument�w, kt�rzy dokonali transakcji oraz 179902 (89.951\%) konsument�w, kt�rzy nie dokonali transakcji (rysunek \ref{classescount}). Dla zbioru testowego nie jestesmy w stanie okreslic stosunku obu klas ze wzgledu na brak etykiet. 
+Przetwarzanie i analiza danych są często uważane za najważniejsze narzędzia w osiąganiu ponadprzeciętnych wyników w zagadnieniach związanych ze sztuczną inteligencją. Przetwarzanie danych należy rozpocząć od sprawdzenia ich integralności. Przeszukanie wszystkich wierszy obu zbiorów nie wykazało żadnych brakujących pól. Kolejną ważną informacją jest liczba przykładów w obu klasach. Im bardziej nierównomierne są liczności zbiorów, tym trudniej stworzyć model, który nie będzie się przeuczał w stronę wskazywania na liczniejszą klasę. Dla takich problemów nie można również korzystać z miary dokładności jaką jest procent prawidłowych klasyfikacji. W takich przypadkach należy użyć bardziej zaawansowanych metod porównywania modeli klasyfikacyjnych, np. wskaźnika Dice Coefficient. Zbiór treningowy jest podzielony na 20098 (10.049\%) konsumentów, którzy dokonali transakcji oraz 179902 (89.951\%) konsumentów, którzy nie dokonali transakcji (rysunek \ref{classescount}). Dla zbioru testowego nie jesteśmy w stanie określić stosunku obu klas ze względu na brak etykiet. 
 \begin{figure}[H]
 \centering \includegraphics[scale=0.7]{classes.eps}
-\caption{Liczba przyklad�w w ka�dej z klas}
+\caption{Liczba przykładów w każdej z klas}
 \label{classescount}
 \end{figure}
-Jak widac, klasy mocno r�nia sie licznoscia, co negatywnie wplywa na poziom trudnosci calego zagadnienia.
+Jak widać, klasy mocno różnią się licznością, co negatywnie wpływa na poziom trudności całego zagadnienia.
 
 \subsubsection{EDA (Exploratory Data Analysis)}
 
-Eksploracyjne badanie danych jest podstawowym narzedziem w analizie danych pozwalajacym na szczeg�lowy opis, wizualizacje oraz badanie danych bez koniecznosci zakladania hipotez co do tych danych. Jest to w gl�wnej mierze metoda oparta o statystyke, a jej wyniki pozwalaja na ukierunkowanie kolejnych badan na konkretne cechy posiadanych danych. 
-\newline W tablicy \ref{traindescribe} zestawiono dane statystyczne opisujace ka�da z cech (kolumny kolejno: nazwa cechy, srednia, odchylenie standardowe, minimum, kwantyl 25\%, mediana, kwantyl 75\%, maksimum) dla zbioru treningowego.
+Eksploracyjne badanie danych jest podstawowym narzędziem w analizie danych pozwalającym na szczegółowy opis, wizualizację oraz badanie danych bez konieczności zakładania hipotez co do tych danych. Jest to w głównej mierze metoda oparta o statystykę, a jej wyniki pozwalają na ukierunkowanie kolejnych badań na konkretne cechy posiadanych danych. 
+\newline W tablicy \ref{traindescribe} zestawiono dane statystyczne opisujące każdą z cech (kolumny kolejno: nazwa cechy, średnia, odchylenie standardowe, minimum, kwantyl 25\%, mediana, kwantyl 75\%, maksimum) dla zbioru treningowego.
 
 \begin{longtable}{lrrrrrrr}
 \toprule
@@ -308,37 +308,37 @@ Eksploracyjne badanie danych jest podstawowym narzedziem w analizie danych pozwa
  var\_199 &  -3.326537 &  10.438015 & -38.8528 & -11.208475 &  -2.81955 &   4.836800 &  28.5007 \\
 \end{longtable}
 
-Z tabeli \ref{traindescribe} wynika, �e odchylenie standardowe du�ej liczby cech jest znaczne. Kolejna obserwacja jest podobny zakres wartosci danych ka�dej cechy. Wszystkie wartosci ze zbioru treningowego mieszcza sie w zakresie $[-91, 75]$, co jest zaskakujaco malym przedzialem dla tak du�ej liczby cech. Za to srednie wartosci poszczeg�lnych atrybut�w sa bardzo zr�nicowane i wynosza od $-16.5$ do $24.5$. Warto zwr�cic uwage na zmienna o numerze $68$, dla kt�rej minimum wynosi 5.018893, a maksimum 5.0469 (odchylenie standardowe: 0.007186). Jest to zmienna o cecha o najmniejszym rozstrzale wartosci.
+Z tabeli \ref{traindescribe} wynika, że odchylenie standardowe dużej liczby cech jest znaczne. Kolejną obserwacją jest podobny zakres wartości danych każdej cechy. Wszystkie wartości ze zbioru treningowego mieszczą się w zakresie $[-91, 75]$, co jest zaskakująco małym przedziałem dla tak dużej liczby cech. Za to średnie wartości poszczególnych atrybutów są bardzo zróżnicowane i wynoszą od $-16.5$ do $24.5$. Warto zwrócić uwagę na zmienną o numerze $68$, dla której minimum wynosi 5.018893, a maksimum 5.0469 (odchylenie standardowe: 0.007186). Jest to zmienna o cecha o najmniejszym rozstrzale wartości.
 \newline 
 
-Istotny mo�e byc r�wnie� rozklad wartosci poszczeg�lnych cech w zale�nosci od klasy.
-Rysunek \ref{featuresDistribution25} przedstawia wizualizacje tych�e rozklad�w dla pierwszych 25 cech (w zbiorze treningowym). Wykresy dla wszystkich 200 kolumn znajduja sie w zalaczonym pliku \textit{AllFeaturesDistribution.png}.
+Istotny może być również rozkład wartości poszczególnych cech w zależności od klasy.
+Rysunek \ref{featuresDistribution25} przedstawia wizualizację tychże rozkładów dla pierwszych 25 cech (w zbiorze treningowym). Wykresy dla wszystkich 200 kolumn znajdują się w załączonym pliku \textit{AllFeaturesDistribution.png}.
 
 \begin{figure}[H]
 \centering 
 \includegraphics[width = 472pt]{feature_distribution.eps}
-\caption{Rozklad wartosci pierwszych 25 cech w podziale na klasy (dotyczy zbioru treningowego)}
+\caption{Rozkład wartości pierwszych 25 cech w podziale na klasy (dotyczy zbioru treningowego)}
 \label{featuresDistribution25}
 \end{figure}
 
-Wnioskujac z omawianych wizualizacji, rozklad wartosci jest zbli�ony w obu klasach dla wszystkich rozwa�anych kolumn. Wykresy niemal�e pokrywaja sie. Jednak czesc cech (np. dla var0, var2, var6 itd.) charakteryzuje sie delikatnymi rozbie�nosciami. Mo�na wnioskowac, �e beda one szczeg�lnie istotne w procesie klasyfikacji.
+Wnioskując z omawianych wizualizacji, rozkład wartości jest zbliżony w obu klasach dla wszystkich rozważanych kolumn. Wykresy niemalże pokrywają się. Jednak część cech (np. dla var0, var2, var6 itd.) charakteryzuje się delikatnymi rozbieżnościami. Można wnioskować, że będą one szczególnie istotne w procesie klasyfikacji.
 
-Warto te� por�wnac rozklad cech zbioru treningowego i testowego. Wizualizacja dla pierwszych 25 cech zostala przedstawiona na rysunku \ref{features_distribution_train_vs_test}.
+Warto też porównać rozkład cech zbioru treningowego i testowego. Wizualizacja dla pierwszych 25 cech została przedstawiona na rysunku \ref{features_distribution_train_vs_test}.
 
 \begin{figure}[H]
 \centering 
 \includegraphics[width = 472pt]{feature_distribution_train_vs_test.eps}
-\caption{Rozklad wartosci pierwszych 25 cech w zbiorze treningowym i testowym}
+\caption{Rozkład wartości pierwszych 25 cech w zbiorze treningowym i testowym}
 \label{features_distribution_train_vs_test}
 \end{figure}
 
-Jak mo�na zauwa�yc, zbiory testowy i treningowy sa ludzaco podobne pod wzgledem dystrybucji wartosci poszczeg�lnych zmiennych. Stanowi to du�a zalete. Prawdopodobnie wykorzystanie informacji z kolumn o najwiekszych rozbie�nosciach przy podziale na klasy (w zbiorze treningowym) przyniesie sukces r�wnie� w przypadku zbioru testowego.
+Jak można zauważyć, zbiory testowy i treningowy są łudząco podobne pod względem dystrybucji wartości poszczególnych zmiennych. Stanowi to dużą zaletę. Prawdopodobnie wykorzystanie informacji z kolumn o największych rozbieżnościach przy podziale na klasy (w zbiorze treningowym) przyniesie sukces również w przypadku zbioru testowego.
 
 \subsubsection{PCA (Principal Component Analysis)}
-PCA scisle wia�e sie z metodami wyboru cech i algorytmami kt�re to realizuja.
-Dane skladaja sie z 200 cech liczbowych, dlatego warto sprawdzic czy wszystkie wprowadzaja nowa informacje. Mo�e sie tak zda�yc, �e niekt�re z tych cech sa ze soba skorelowane na tyle, �e mo�na niekt�re z nich pominac w modelu nie tracac na jego jakosci. Ponad to mo�e sie tak zda�yc, �e u�ycie wszystkich dostepnych cech mo�e dac w rezultacie gorsze wyniki ni� u�ycie podzbioru zbioru cech. W celu zbadania, kt�re z dostepnych cech maja istotny wplyw na dany problem przeprowadza sie analize PCA. Celem takiej analizy jest znalezienie zbioru cech, kt�rych u�ycie zmaksymalizuje jakosc modelu przy jednoczesnym zminimalizowaniu zbioru cech u�ytych w danym problemie.
+PCA sciśle wiąże sie z metodami wyboru cech i algorytmami które to realizują.
+Dane składają się z 200 cech liczbowych, dlatego warto sprawdzić czy wszystkie wprowadzają nową informację. Może się tak zdażyć, że niektóre z tych cech są ze sobą skorelowane na tyle, że można niektóre z nich pominąć w modelu nie tracąc na jego jakości. Ponad to może się tak zdażyć, że użycie wszystkich dostępnych cech może dać w rezultacie gorsze wyniki niż użycie podzbioru zbioru cech. W celu zbadania, które z dostępnych cech mają istotny wpływ na dany problem przeprowadza się analizę PCA. Celem takiej analizy jest znalezienie zbioru cech, których użycie zmaksymalizuje jakość modelu przy jednoczesnym zminimalizowaniu zbioru cech użytych w danym problemie.
 \newline
-Na poni�ej zostala zaprezentowana macierz korelacji cech zbioru testowego.
+Na poniżej została zaprezentowana macierz korelacji cech zbioru testowego.
 \begin{figure}[H]
 \centering 
 \includegraphics[width = 472pt]{feature_correlation_matrix}
@@ -346,10 +346,10 @@ Na poni�ej zostala zaprezentowana macierz korelacji cech zbioru testowego.
 \label{feature_correlation_matrix}
 \end{figure}
 
-Z powy�szego wykresu mo�emy odczytac to �e cechy nie sa ze soba skorelowane lub sa w bardzo malym stopniu. \\
+Z powyższego wykresu możemy odczytać to że cechy nie są ze sobą skorelowane lub są w bardzo małym stopniu. \\
 \\
 \begin{tabular}{llr}
-   &   &        Wartosc korelacji \\
+   &   &        Wartość korelacji \\
 var\_75 & var\_139 &  0.009868 \\
 var\_96 & var\_143 &  0.008829 \\
 var\_31 & var\_132 &  0.008714 \\
@@ -362,15 +362,15 @@ var\_19 & var\_187 &  0.008201 \\
 var\_92 & var\_164 &  0.008058 \\
 \end{tabular}
 
-Powy�sza tabela przedstawiajaca 10 najbardziej skorelowanych cech w zbiorze testowym upewnia nas, �e wyglad macie�y korelacji przedstawionej na rysunku \ref{feature_correlation_matrix} to nie blad, a jedynie fakt, �e cechy sa od siebie niezale�ne.
-Taka informacja nie pozwala nam na odrzuceniu niekt�rych kolumn, poniewa� na wykresie widzimy, �e potencjalnie ka�da cecha wnosi cos nowego i mo�e miec istotny wplyw na jakosc przyszlego modelu.
+Powyższa tabela przedstawiająca 10 najbardziej skorelowanych cech w zbiorze testowym upewnia nas, że wygląd macieży korelacji przedstawionej na rysunku \ref{feature_correlation_matrix} to nie błąd, a jedynie fakt, że cechy są od siebie niezależne.
+Taka informacja nie pozwala nam na odrzuceniu niektórych kolumn, ponieważ na wykresie widzimy, że potencjalnie każda cecha wnosi coś nowego i może mieć istotny wpływ na jakość przyszłego modelu.
 \newline
-Przy u�yciu dostepnych bibliotek takich jak "sklearn" w jezyku Python mo�na wykonac redukcje wymiarowosci problemu przy pomocy dedytkowanej do tego klasy "PCA". Przy jej pomocy jestesmy w stanie zredukowac praktycznie dowolnie wymiar zadania, wiekszym lub miejszym kosztem.
-Na przyklad przy zachowaniu 95\% wariancji dostepny w bibiotece algorytm redukuje wymiar do 190 cech, co jeszcze bardziej pokazuje, �e ka�da cecha mo�e miec istotny wplyw na wynik (liniowa zale�nosc zachowania wariancji do ilosci cech). Jednak aby sie o tym przekonac w 100-u procentach nie zbedne beda testy na konkretnych modelach i algorytmach wybranych do rozwiazania tego problemu.
+Przy użyciu dostępnych bibliotek takich jak "sklearn" w języku Python można wykonać redukcję wymiarowości problemu przy pomocy dedytkowanej do tego klasy "PCA". Przy jej pomocy jesteśmy w stanie zredukować praktycznie dowolnie wymiar zadania, większym lub miejszym kosztem.
+Na przykład przy zachowaniu 95\% wariancji dostępny w bibiotece algorytm redukuje wymiar do 190 cech, co jeszcze bardziej pokazuje, że każda cecha może mieć istotny wpływ na wynik (liniowa zależność zachowania wariancji do ilości cech). Jednak aby się o tym przekonać w 100-u procentach nie zbędne będą testy na konkretnych modelach i algorytmach wybranych do rozwiązania tego problemu.
 
 \section{Ocena modeli}
 
-Spos�b oceny modeli zostal narzucony przez organizator�w konkursu. Ze wzgledu na nier�wnomierny podzial klas, do oceny modeli wykorzystana jest miara AUC, kt�ra mo�na uzyskac poprzez policzenie pola pod krzywa ROC.
+Sposób oceny modeli został narzucony przez organizatorów konkursu. Ze względu na nierównomierny podział klas, do oceny modeli wykorzystana jest miara AUC, którą można uzyskać poprzez policzenie pola pod krzywą ROC.
 
 
 \section{Modele klasyczne}
