@@ -1,0 +1,7 @@
+base_score,booster,colsample_bylevel,colsample_bytree,eta,eval_metric,gamma,learning_rate,max_delta_step,max_depth,min_child_weight,missing,n_estimators,nthread,objective,reg_alpha,reg_lambda,scale_pos_weight,seed,silent,subsample,verbosity,pca_components,model,auc
+0.5,gbtree,1,1,0.2,"['auc', 'logloss']",0,0.1,0,2,1,,100,1,binary:logistic,0,1,0.11111882721407787,42,0,1,0,200,pca.model,0.8556655628486026
+0.5,gbtree,1,1,0.1,"['auc', 'logloss']",0,0.1,0,2,1,,100,1,binary:logistic,0,1,0.11111882721407787,42,0,1,0,200,pca.model,0.8426286830628599
+0.5,gbtree,1,1,0.2,"['auc', 'logloss']",0,0.1,0,2,1,,100,1,binary:logistic,0,1,0.11111882721407787,42,0,1,0,200,pca.model,0.8686168990401557
+0.5,gbtree,1,1,0.1,"['auc', 'logloss']",0,0.1,0,2,1,,100,1,binary:logistic,0,1,0.11111882721407787,42,0,1,0,200,pca.model,0.865513453856369
+0.5,gbtree,1,1,0.2,"['auc', 'logloss']",0,0.1,0,2,1,,100,1,binary:logistic,0,1,0.11111882721407787,42,0,1,0,200,pca.model,0.8686290442862036
+0.5,gbtree,1,1,0.1,"['auc', 'logloss']",0,0.1,0,2,1,,100,1,binary:logistic,0,1,0.11111882721407787,42,0,1,0,200,pca.model,0.8656648836258025
