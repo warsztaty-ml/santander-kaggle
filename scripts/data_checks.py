@@ -15,7 +15,7 @@ def compute_feature_distribution(df1, df2, label1, label2, features, file_name):
     for feature in features:  
         i += 1
         print("Computing feature {}. distribution...".format(feature))
-        plt.subplot(5,5,i)
+        plt.subplot(40,5,i)
         sns.kdeplot(df1[feature], bw=bandWidth,label=label1)
 
         p2 = sns.kdeplot(df2[feature], bw=bandWidth,label=label2)
@@ -84,7 +84,7 @@ print('Mean std:', train_describe[['std']].min()[0])
 
 t0 = train.loc[train['target'] == 0]
 t1 = train.loc[train['target'] == 1]
-features = train.columns.values[2:27]
+features = train.columns.values[2:202]
 
 print("Computing train set features distribution (0 vs 1)...")
 compute_feature_distribution(t0, t1, '0', '1', features, 'feature_distribution')
