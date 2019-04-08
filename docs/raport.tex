@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+﻿\documentclass[12pt]{article}
 
 \usepackage[T1]{fontenc}
 \usepackage[polish]{babel}
@@ -362,10 +362,10 @@ var\_19 & var\_187 &  0.008201 \\
 var\_92 & var\_164 &  0.008058 \\
 \end{tabular}
 
-Powyższa tabela przedstawiająca 10 najbardziej skorelowanych cech w zbiorze testowym upewnia nas, że wygląd macieży korelacji przedstawionej na rysunku \ref{feature_correlation_matrix} to nie błąd, a jedynie fakt, że cechy są od siebie niezależne.
-Taka informacja nie pozwala nam na odrzuceniu niektórych kolumn, ponieważ na wykresie widzimy, że potencjalnie każda cecha wnosi coś nowego i może mieć istotny wpływ na jakość przyszłego modelu.
+Powyższa tabela przedstawiająca 10 najbardziej skorelowanych cech w zbiorze testowym upewnia nas, że wygląd macierzy korelacji przedstawionej na rysunku \ref{feature_correlation_matrix} to nie błąd, a jedynie fakt, że cechy są od siebie niezależne.
+Taka informacja nie pozwala nam na odrzucenie niektórych kolumn, ponieważ na wykresie widzimy, że potencjalnie każda cecha wnosi coś nowego i może mieć istotny wpływ na jakość przyszłego modelu.
 \newline
-Przy użyciu dostępnych bibliotek takich jak "sklearn" w języku Python można wykonać redukcję wymiarowości problemu przy pomocy dedytkowanej do tego klasy "PCA". Przy jej pomocy jesteśmy w stanie zredukować praktycznie dowolnie wymiar zadania, większym lub miejszym kosztem.
+Przy użyciu dostępnych bibliotek takich jak \textit{sklearn} w języku Python można wykonać redukcję wymiarowości problemu przy pomocy dedytkowanej do tego klasy \textit{PCA}. Przy jej pomocy jesteśmy w stanie zredukować praktycznie dowolnie wymiar zadania, większym lub miejszym kosztem.
 Na przykład przy zachowaniu 95\% wariancji dostępny w bibiotece algorytm redukuje wymiar do 190 cech, co jeszcze bardziej pokazuje, że każda cecha może mieć istotny wpływ na wynik (liniowa zależność zachowania wariancji do ilości cech). Jednak aby się o tym przekonać w 100-u procentach nie zbędne będą testy na konkretnych modelach i algorytmach wybranych do rozwiązania tego problemu.
 
 \section{Ocena modeli}
