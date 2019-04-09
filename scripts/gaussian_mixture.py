@@ -6,20 +6,26 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from scipy.special import logsumexp
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import train_test_split
+import data_processor
 import processing
 
 DATA_DIR = '../data/'
-IS_UNDERSAMPLED = False
-IS_OVERSAMPLED = True
+IS_UNDERSAMPLED = True
+IS_OVERSAMPLED = False
 
-IS_GRID_SEARCH = True
-IS_TRAINING = True
+IS_GRID_SEARCH = False
+IS_TRAINING = False
+
+SEED = 12415
 
 # component_numbers = [15]
 # reg_covars = [0.01]
 
-component_numbers = [5, 10, 15, 20]
+component_numbers = [15, 10, 5, 20]
 reg_covars = [1e-2, 1e-4]
+TrainData = pd.read_csv(DATA_DIR + 'train.csv')
+TestData = pd.read_csv(DATA_DIR + 'test.csv')
+DataProcessor = None
 
 
 # using Bayes' theorem
@@ -57,22 +63,22 @@ class GaussMixNaiveBayes(BaseEstimator, ClassifierMixin):
         return self.predict_proba(x).argmax(axis=1)
 
 
-def load_and_process_data(is_training, is_undersampled, is_oversampled):
-    if is_training:
-        print("Loading train data")
-        data = pd.read_csv(DATA_DIR + 'train.csv')
-    else:
-        print("Loading test data")
-        data = pd.read_csv(DATA_DIR + 'test.csv')
-
+def create_data_processor(is_undersampled, is_oversampled, seed=0):
+    global DataProcessor
     if is_undersampled:
-        x_data, y_data, col_nr = processing.data_preprocessing_with_undersampled(data, is_training)
+        DataProcessor = data_processor.DataProcessor(TrainData).with_scaling().with_undersampling(seed)
     else:
         if is_oversampled:
-            # TODO
-            x_data, y_data, col_nr = processing.data_preprocessing_with_oversampled(data, is_training)
+            DataProcessor = data_processor.DataProcessor(TrainData).with_scaling().with_oversampling(seed)
         else:
-            x_data, y_data, col_nr = processing.data_preprocessing(data, is_training)
+            DataProcessor = data_processor.DataProcessor(TrainData).with_scaling()
+
+
+def process_data(is_training):
+    if is_training:
+        x_data, y_data, col_nr = DataProcessor.process_train()
+    else:
+        x_data, y_data, col_nr = DataProcessor.process_test(TestData)
 
     x_data = x_data.values.astype('float64')
     if is_training:
@@ -81,13 +87,8 @@ def load_and_process_data(is_training, is_undersampled, is_oversampled):
 
 
 def hyperparameter_grid_search():
-    x_data, y_data, _ = load_and_process_data(True, IS_UNDERSAMPLED, IS_OVERSAMPLED)
-    if IS_UNDERSAMPLED:
-        x_train = x_data
-        y_train = y_data
-        x_val, y_val, _ = load_and_process_data(True, False, False)
-    else:
-        x_train, x_val, y_train, y_val = train_test_split(x_data, y_data, test_size=0.1, random_state=1)
+    x_data, y_data, _ = process_data(True)
+    x_train, x_val, y_train, y_val = train_test_split(x_data, y_data, test_size=0.1, random_state=1)
 
     col_names = ['component_number', 'reg_covar', 'AUC_train', 'AUC_val']
     rows = []
@@ -109,15 +110,16 @@ def hyperparameter_grid_search():
 
 
 def main():
+    create_data_processor(IS_UNDERSAMPLED, IS_OVERSAMPLED, SEED)
     if IS_GRID_SEARCH:
         hyperparameter_grid_search()
     else:
         clf = GaussMixNaiveBayes(component_number=component_numbers[0], reg_covar=reg_covars[0])
-        x_train, y_train, _ = load_and_process_data(True, IS_UNDERSAMPLED, IS_OVERSAMPLED)
+        x_train, y_train, _ = process_data(True)
         clf.fit(x_train, y_train)
         print('Training AUC: {}'.format(roc_auc_score(y_train, clf.predict_proba(x_train)[:, 1])))
         if not IS_TRAINING:
-            x_test, _, _ = load_and_process_data(False, False, False)
+            x_test, _, _ = process_data(False)
             pred = clf.predict_proba(x_test)[:, 1]
             pred = np.round(pred)
 
