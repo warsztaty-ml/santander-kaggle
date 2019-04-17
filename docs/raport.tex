@@ -1,4 +1,4 @@
-﻿\documentclass[12pt]{article}
+\documentclass[12pt]{article}
 
 \usepackage[T1]{fontenc}
 \usepackage[polish]{babel}
@@ -431,6 +431,82 @@ Sposób oceny modeli został narzucony przez organizatorów konkursu. Ze względ
 
 
 \section{Modele klasyczne}
+
+\subsection{Regresja SVM}
+Jednym z modeli dla których podjęto próbę rozwiązania problemu są wektory SVM. Niestety dla danych treningowych, których jest około $200$ tys. przeprowadzenie obliczeń jest praktycznie niemożliwe. Dane zostały zredukowane wykorzystując metodę \textit{undersampling} dzięki której uzyskano koło $40$ tys danych i dodatkowo zachowano balans pomiędzy danymi z odpowiedziami 0 i 1.
+
+Na samym początku wykokano testy dla różnych kerneli. Wyniki tych testów zostały przedstawione w tabeli nr \ref{tab:svm_kernels}. Dla kernela \textit{rbf} metoda zwróciła najlepszy wynik.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+    Kernel & Wyniki \\
+    \hline
+    \hline
+    \textit{sigmoid} &	0.8524 \\
+    \hline
+    \textit{linear} &	0.8620 \\
+    \hline
+    \textit{poly} &	0.8524 \\
+    \hline
+    \textbf{\textit{rbf}} &	\textbf{0.8629} \\
+    \hline
+    \end{tabular}
+    \caption{Wyniki modelów SCV dla różnych kerneli i domyślnych parametrów (C=1.0, epsilon=0.1, gamma=0.005, degree=3)}
+    \label{tab:svm_kernels}
+\end{table}
+
+W kolejnych testach sprawdzano działanie modelu zmieniając parametry: eps, C i gamma. Najlepszy wynik jaki udało się uzyskać to 0.8841. Końcowy wynik dla tego modelu jaki uzyskano na koniec konkursu to 0.88079.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    Eps & C & Gamma & Wynik \\
+    \hline
+    \hline
+    0.2 & - & - & 0.8628 \\
+    \hline
+    0.1 & - & - & 0.8629 \\
+    \hline
+    0.05 & - & - & 0.8618 \\
+    \hline
+    0.01 & - & - & 0.8603 \\
+    \hline
+    0.3 & - & - & 0.8590 \\
+    \hline
+    \textbf{0.15} & - & - & 0.8633 \\
+    \hline
+    \textbf{0.15} & 2 & - & 0.8564 \\
+    \hline
+    \textbf{0.15} & 10 & - & 0.8561 \\
+    \hline
+    \textbf{0.15} & 0.5 & - & 0.8753 \\
+    \hline
+    \textbf{0.15} & 0.1 & - & 0.8840 \\
+    \hline
+    \textbf{0.15} & 0.01 & - & 0.8828 \\
+    \hline
+    \textbf{0.15} & 0.3 & - & 0.8804 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & - & 0.8841 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & 1 & 0.5 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & 10 & 0.5 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & 0.1 & 0.79 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & 0.01 & 0.8838 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & 0.001 & 0.8779 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & \textbf{0.005} & 0.8841 \\
+    \hline
+    \end{tabular}
+    \caption{Wyniki modelów SCV dla kernela \textit{rbf} i różnych parametrów}
+    \label{tab:my_label}
+\end{table}
 
 \section{Modele niekonwencjonalne}
 
