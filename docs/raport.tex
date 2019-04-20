@@ -508,6 +508,32 @@ W kolejnych testach sprawdzano działanie modelu zmieniając parametry: eps, C i
     \label{tab:my_label}
 \end{table}
 
+\subsection{Sieć neuronowa}
+Użycie standardowego modelu wielowarstwowej sieci perceptronowej nie przyniosło zadowalających rezultatów. Uzyskany został wynik około 0.85. Okazało się, że użycie konwolucyjnej sieci neuronowej znacznie poprawiło wynik. Sama zmiana modelu sieci pozwoliła na osiągnięcie rezultatu 0.892. Spróbujmy wyjaśnić skąd ta różnica. Poniżej zamieszczony został dokładny model sieci.
+
+\newpage
+
+\begin{lstlisting}[caption={Model sieci CNN}, captionpos=b]
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d_2 (Conv1D)            (None, 200, 32)           64        
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 200, 32)           128       
+_________________________________________________________________
+flatten_2 (Flatten)          (None, 6400)              0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 1)                 6401      
+=================================================================
+Total params: 6,593
+\end{lstlisting} 
+
+Wejście sieci jest przerabiane na 2 wymiary, tj. ma rozmiar 200x1. 
+Zobaczmy, że pierwsza warstwa ma zaledwie 64 parametry (32 filtry rozmiaru 1x1 oraz 32 biasy). Jako funkcja aktywacji została użyta funkcja ReLU. Znaczna część cech po przejściu przez filtr zostanie wyzerowana. Stąd też macierz wynikowa 200x32 jest macierzą rzadką. Warstwa ta pozwala na automatyczne wyodrębnianie ważności cech jednych nad drugimi. Można zauważyć analogię do działanie płytkich modeli boostingu, które są skuteczne dla tego konkursu. Dalej, warstwa normalizująca pozwala na przyspieszenie treningu, nie ma wpływu na poprawę jakości wyniku. Następnie wypłaszczamy macierz do jednego wymiaru uzyskując wektor długości 6400 (zamiast 200 w klasycznym MLP) dla warstwy fully-connected. Dopiero w ostatniej warstwie następuje mieszanie pomiędzy cechami. Zastosowanie funkcji aktywacji sigmoid pozwala na uzyskanie wyniku w przedziale [0,1].
+
+Konwolucja pozwoliła na działanie na każdej z cech niezależnie (przed zastosowaniem warstwy Flatten). Jest to skuteczne, ponieważ de facto nastąpiła próba odzyskania danych oryginalnych przed wstępnym przetworzeniem przez Santander i możliwość podziałania na danych bardziej skorelowanych. 
+
+Ze względu na niezrównoważenie klas do modelu wprowadzono oversampling. Polegało to na nadaniu wag klasom. Taką obsługę oversamplingu dostarcza \textit{keras}, co ostatecznie okazało się delikatnie skuteczniejsze niż samemu generowanie nowych danych. Ponadto zastosowano komitet 30 sieci. Jako rezultat końcowy były brane średnie arytmetyczne z uzyskanych rezultatów sieci. Ostateczny wynik w prywatnym rankingu zawodów wyniósł \textbf{0.89823}, co pozwoliło na zajęcie miejsca w top 49\% najlepszych wyników. Z samego modelu sieci już niewiele dałoby się wycisnąć. Na uzyskanie lepszego wyniku (powyżej 0.9) potrzebna byłaby dogłębna analiza danych i sensowna rozbudowa wektora cech (feature engineering) z 200 nawet i do 1000. Zajęcie czołowego miejsca w konkursie zależało nie od użytego modelu, lecz od jakości EDA.
+
 \section{Modele niekonwencjonalne}
 
 \section{Wyniki i podsumowanie}
