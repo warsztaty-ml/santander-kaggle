@@ -119,3 +119,4 @@ target/
 /scripts/*.png
 /.vs
 /scripts/.vs
+/docs

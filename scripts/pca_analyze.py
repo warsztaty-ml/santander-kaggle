@@ -3,14 +3,14 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('../data/test.csv')
+df = pd.read_csv('C:\\Users\\mabien\\source\\repos\\santander-kaggle\\data/test.csv')
 df = df.drop(columns=['ID_code'])
 def get_redundant_pairs(df):
     '''Get diagonal and lower triangular pairs of correlation matrix'''
     pairs_to_drop = set()
     cols = df.columns
     for i in range(0, df.shape[1]):
-        for j in range(0, i+1):
+        for j in range(0, i + 1):
             pairs_to_drop.add((cols[i], cols[j]))
     return pairs_to_drop
 
@@ -20,6 +20,13 @@ def get_top_abs_correlations(df, n=5):
     au_corr = au_corr.drop(labels=labels_to_drop).sort_values(ascending=False)
     return au_corr[0:n]
 
+def cout_outliers(data, mult=2):
+    q1, q3 = np.percentile(data,[25,75])
+    iqr = q3 - q1
+    lower_bound = q1 - (mult * iqr) 
+    upper_bound = q3 + (mult * iqr)
+    
+    return sum((x<lower_bound or x>upper_bound) for x in data)
 
 ##Corr Matrix
 #corr = df.corr()
@@ -32,15 +39,27 @@ def get_top_abs_correlations(df, n=5):
 #plt.show()
 #plt.clf()
 
-print("Top Absolute Correlations")
+#print("Top Absolute Correlations")
 
-res = get_top_abs_correlations(df, 10)
+#res = get_top_abs_correlations(df, 10)
 
-f= open("../docs/mostcorrelatedfeatures.txt","w+")
-f.write(pd.DataFrame(res).to_latex())
-f.close()
+#f= open("../docs/mostcorrelatedfeatures.txt","w+")
+#f.write(pd.DataFrame(res).to_latex())
+#f.close()
 #End Corr Matrix
 
+## Check Outliers
+outliersPerColumn = []
+for column in df.columns:
+    data = df[column]
+    outliersPerColumn.append(cout_outliers(data))
+
+plt.plot(outliersPerColumn)
+plt.ylabel("Liczba outliers w kolumnie")
+plt.xlabel("Numer kolumny")
+plt.savefig("outliers.eps")
+plt.savefig("outliers.png")
+##end Outliers
 
 #from sklearn.decomposition import PCA
 #from sklearn.preprocessing import StandardScaler
