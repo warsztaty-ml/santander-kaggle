@@ -323,6 +323,63 @@ Rysunek \ref{featuresDistribution25} przedstawia wizualizację tychże rozkład�
 
 Wnioskując z omawianych wizualizacji, rozkład wartości jest zbliżony w obu klasach dla wszystkich rozważanych kolumn. Wykresy niemalże pokrywają się. Jednak część cech (np. dla var0, var2, var6 itd.) charakteryzuje się delikatnymi rozbieżnościami. Można wnioskować, że będą one szczególnie istotne w procesie klasyfikacji.
 
+Aby porównać istotność cech pod omawianym względem i uszeregować je od najistotniejszej (dla klasyfikatora) do wnoszącej najmniej informacji, potrzebujemy pewnej metryki opisującej różnicę w rozkładzie wartości danej cechy w zależności od klasy.   
+\newline Oznaczmy jako $Z_0$ figurę składającą się ze wszystkich punktów pod wykresem rozkładu wartości dla klasy 0. Analogicznie, jako $Z_1$ oznaczmy figurę składającą się ze wszystkich punktów pod wykresem rozkładu wartości dla klasy 1.
+\newline Jako wartość metryki opisującej różnicę rozkładów przyjmujemy pole powierzchni figury będącej wynikiem różnicy symetrycznej figur $Z_0$ i $Z_1$. Czym większe pole, tym bardziej rozbieżne są rozkłady wartości poszczególnych klas. A czym bardziej rozbieżne rozkłady, tym (potencjalnie) wartościowsza jest dana kolumna.
+\newline Tabela \ref{tab:my_label} zawiera zestawienie 20 kolumn potencjalnie najbardziej przydatnych w procesie klasyfikacji pod omawianym względem. Różnice zostały zaokrąglone do części dziesięciotysięcznych. Pełne zestawienie cech znajduje się w pliku \textit{feature\_distribution\_differences.csv}.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+    feature & difference \\
+    \hline
+    \hline
+    var\_68 &	6.0303 \\
+    \hline
+    var\_12 &	5.7848 \\
+    \hline
+    var\_166 &	4.7379 \\
+    \hline
+    var\_23	& 4.4199 \\
+    \hline
+    var\_148	& 4.1119 \\
+    \hline
+    var\_108	& 3.7552 \\
+    \hline
+    var\_169	& 3.3483 \\
+    \hline
+    var\_28	& 2.8039 \\
+    \hline
+    var\_57	& 2.7702 \\
+    \hline
+    var\_43	& 2.6340 \\
+    \hline
+    var\_133	& 2.5368 \\
+    \hline
+    var\_91	& 2.2162 \\
+    \hline
+    var\_53	& 2.2148 \\
+    \hline
+    var\_6	& 1.9670 \\
+    \hline
+    var\_95	& 1.9046 \\
+    \hline
+    var\_111	& 1.8731 \\
+    \hline
+    var\_125	& 1.8327 \\
+    \hline
+    var\_156	& 1.7606 \\
+    \hline
+    var\_105	& 1.7261 \\
+    \hline
+    var\_93	& 1.6879 \\
+    \hline
+    \end{tabular}
+    \caption{20 cech zbioru treningowego charakteryzujących się największą rozbieżnością pod względem rozkładu klas}
+    \label{tab:my_label}
+\end{table}
+
 Warto też porównać rozkład cech zbioru treningowego i testowego. Wizualizacja dla pierwszych 25 cech została przedstawiona na rysunku \ref{features_distribution_train_vs_test}.
 
 \begin{figure}[H]
@@ -362,10 +419,10 @@ var\_19 & var\_187 &  0.008201 \\
 var\_92 & var\_164 &  0.008058 \\
 \end{tabular}
 
-Powyższa tabela przedstawiająca 10 najbardziej skorelowanych cech w zbiorze testowym upewnia nas, że wygląd macieży korelacji przedstawionej na rysunku \ref{feature_correlation_matrix} to nie błąd, a jedynie fakt, że cechy są od siebie niezależne.
-Taka informacja nie pozwala nam na odrzuceniu niektórych kolumn, ponieważ na wykresie widzimy, że potencjalnie każda cecha wnosi coś nowego i może mieć istotny wpływ na jakość przyszłego modelu.
+Powyższa tabela przedstawiająca 10 najbardziej skorelowanych cech w zbiorze testowym upewnia nas, że wygląd macierzy korelacji przedstawionej na rysunku \ref{feature_correlation_matrix} to nie błąd, a jedynie fakt, że cechy są od siebie niezależne.
+Taka informacja nie pozwala nam na odrzucenie niektórych kolumn, ponieważ na wykresie widzimy, że potencjalnie każda cecha wnosi coś nowego i może mieć istotny wpływ na jakość przyszłego modelu.
 \newline
-Przy użyciu dostępnych bibliotek takich jak "sklearn" w języku Python można wykonać redukcję wymiarowości problemu przy pomocy dedytkowanej do tego klasy "PCA". Przy jej pomocy jesteśmy w stanie zredukować praktycznie dowolnie wymiar zadania, większym lub miejszym kosztem.
+Przy użyciu dostępnych bibliotek takich jak \textit{sklearn} w języku Python można wykonać redukcję wymiarowości problemu przy pomocy dedytkowanej do tego klasy \textit{PCA}. Przy jej pomocy jesteśmy w stanie zredukować praktycznie dowolnie wymiar zadania, większym lub miejszym kosztem.
 Na przykład przy zachowaniu 95\% wariancji dostępny w bibiotece algorytm redukuje wymiar do 190 cech, co jeszcze bardziej pokazuje, że każda cecha może mieć istotny wpływ na wynik (liniowa zależność zachowania wariancji do ilości cech). Jednak aby się o tym przekonać w 100-u procentach nie zbędne będą testy na konkretnych modelach i algorytmach wybranych do rozwiązania tego problemu.
 
 \section{Ocena modeli}
@@ -374,6 +431,108 @@ Sposób oceny modeli został narzucony przez organizatorów konkursu. Ze względ
 
 
 \section{Modele klasyczne}
+
+\subsection{Regresja SVM}
+Jednym z modeli dla których podjęto próbę rozwiązania problemu są wektory SVM. Niestety dla danych treningowych, których jest około $200$ tys. przeprowadzenie obliczeń jest praktycznie niemożliwe. Dane zostały zredukowane wykorzystując metodę \textit{undersampling} dzięki której uzyskano koło $40$ tys danych i dodatkowo zachowano balans pomiędzy danymi z odpowiedziami 0 i 1.
+
+Na samym początku wykokano testy dla różnych kerneli. Wyniki tych testów zostały przedstawione w tabeli nr \ref{tab:svm_kernels}. Dla kernela \textit{rbf} metoda zwróciła najlepszy wynik.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+    Kernel & Wyniki \\
+    \hline
+    \hline
+    \textit{sigmoid} &	0.8524 \\
+    \hline
+    \textit{linear} &	0.8620 \\
+    \hline
+    \textit{poly} &	0.8524 \\
+    \hline
+    \textbf{\textit{rbf}} &	\textbf{0.8629} \\
+    \hline
+    \end{tabular}
+    \caption{Wyniki modelów SCV dla różnych kerneli i domyślnych parametrów (C=1.0, epsilon=0.1, gamma=0.005, degree=3)}
+    \label{tab:svm_kernels}
+\end{table}
+
+W kolejnych testach sprawdzano działanie modelu zmieniając parametry: eps, C i gamma. Najlepszy wynik jaki udało się uzyskać to 0.8841. Końcowy wynik dla tego modelu jaki uzyskano na koniec konkursu to 0.88079.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    Eps & C & Gamma & Wynik \\
+    \hline
+    \hline
+    0.2 & - & - & 0.8628 \\
+    \hline
+    0.1 & - & - & 0.8629 \\
+    \hline
+    0.05 & - & - & 0.8618 \\
+    \hline
+    0.01 & - & - & 0.8603 \\
+    \hline
+    0.3 & - & - & 0.8590 \\
+    \hline
+    \textbf{0.15} & - & - & 0.8633 \\
+    \hline
+    \textbf{0.15} & 2 & - & 0.8564 \\
+    \hline
+    \textbf{0.15} & 10 & - & 0.8561 \\
+    \hline
+    \textbf{0.15} & 0.5 & - & 0.8753 \\
+    \hline
+    \textbf{0.15} & 0.1 & - & 0.8840 \\
+    \hline
+    \textbf{0.15} & 0.01 & - & 0.8828 \\
+    \hline
+    \textbf{0.15} & 0.3 & - & 0.8804 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & - & 0.8841 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & 1 & 0.5 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & 10 & 0.5 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & 0.1 & 0.79 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & 0.01 & 0.8838 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & 0.001 & 0.8779 \\
+    \hline
+    \textbf{0.15} & \textbf{0.005} & \textbf{0.005} & 0.8841 \\
+    \hline
+    \end{tabular}
+    \caption{Wyniki modelów SCV dla kernela \textit{rbf} i różnych parametrów}
+    \label{tab:my_label}
+\end{table}
+
+\subsection{Sieć neuronowa}
+Użycie standardowego modelu wielowarstwowej sieci perceptronowej nie przyniosło zadowalających rezultatów. Uzyskany został wynik około 0.85. Okazało się, że użycie konwolucyjnej sieci neuronowej znacznie poprawiło wynik. Sama zmiana modelu sieci pozwoliła na osiągnięcie rezultatu 0.892. Spróbujmy wyjaśnić skąd ta różnica. Poniżej zamieszczony został dokładny model sieci.
+
+\newpage
+
+\begin{lstlisting}[caption={Model sieci CNN}, captionpos=b]
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d_2 (Conv1D)            (None, 200, 32)           64        
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 200, 32)           128       
+_________________________________________________________________
+flatten_2 (Flatten)          (None, 6400)              0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 1)                 6401      
+=================================================================
+Total params: 6,593
+\end{lstlisting} 
+
+Wejście sieci jest przerabiane na 2 wymiary, tj. ma rozmiar 200x1. 
+Zobaczmy, że pierwsza warstwa ma zaledwie 64 parametry (32 filtry rozmiaru 1x1 oraz 32 biasy). Jako funkcja aktywacji została użyta funkcja ReLU. Znaczna część cech po przejściu przez filtr zostanie wyzerowana. Stąd też macierz wynikowa 200x32 jest macierzą rzadką. Warstwa ta pozwala na automatyczne wyodrębnianie ważności cech jednych nad drugimi. Można zauważyć analogię do działanie płytkich modeli boostingu, które są skuteczne dla tego konkursu. Dalej, warstwa normalizująca pozwala na przyspieszenie treningu, nie ma wpływu na poprawę jakości wyniku. Następnie wypłaszczamy macierz do jednego wymiaru uzyskując wektor długości 6400 (zamiast 200 w klasycznym MLP) dla warstwy fully-connected. Dopiero w ostatniej warstwie następuje mieszanie pomiędzy cechami. Zastosowanie funkcji aktywacji sigmoid pozwala na uzyskanie wyniku w przedziale [0,1].
+
+Konwolucja pozwoliła na działanie na każdej z cech niezależnie (przed zastosowaniem warstwy Flatten). Jest to skuteczne, ponieważ de facto nastąpiła próba odzyskania danych oryginalnych przed wstępnym przetworzeniem przez Santander i możliwość podziałania na danych bardziej skorelowanych. 
+
+Ze względu na niezrównoważenie klas do modelu wprowadzono oversampling. Polegało to na nadaniu wag klasom. Taką obsługę oversamplingu dostarcza \textit{keras}, co ostatecznie okazało się delikatnie skuteczniejsze niż samemu generowanie nowych danych. Ponadto zastosowano komitet 30 sieci. Jako rezultat końcowy były brane średnie arytmetyczne z uzyskanych rezultatów sieci. Ostateczny wynik w prywatnym rankingu zawodów wyniósł \textbf{0.89823}, co pozwoliło na zajęcie miejsca w top 49\% najlepszych wyników. Z samego modelu sieci już niewiele dałoby się wycisnąć. Na uzyskanie lepszego wyniku (powyżej 0.9) potrzebna byłaby dogłębna analiza danych i sensowna rozbudowa wektora cech (feature engineering) z 200 nawet i do 1000. Zajęcie czołowego miejsca w konkursie zależało nie od użytego modelu, lecz od jakości EDA.
 
 \section{Modele niekonwencjonalne}
 

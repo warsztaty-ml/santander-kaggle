@@ -1,23 +1,43 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+import numpy as np
+import os
 
 def compute_feature_distribution(df1, df2, label1, label2, features, file_name):
+    bandWidth = 0.5
     i = 0
     plt.figure()
-    fig, ax = plt.subplots(5,5,figsize=(18,22))
+    fig, ax = plt.subplots(5,5,figsize=(18,22)) 
+    
+    data = []
 
-    for feature in features:
+    for feature in features:  
         i += 1
         print("Computing feature {}. distribution...".format(feature))
-        plt.subplot(5,5,i)
-        sns.kdeplot(df1[feature], bw=0.5,label=label1)
-        sns.kdeplot(df2[feature], bw=0.5,label=label2)
+        plt.subplot(40,5,i)
+        sns.kdeplot(df1[feature], bw=bandWidth,label=label1)
+
+        p2 = sns.kdeplot(df2[feature], bw=bandWidth,label=label2)
+        lines = p2.get_lines()
+        x1,  y1 = lines[0].get_data()
+        x2,  y2 = lines[1].get_data()
         plt.xlabel(feature, fontsize=9)
         locs, labels = plt.xticks()
         plt.tick_params(axis='x', which='major', labelsize=6, pad=-6)
         plt.tick_params(axis='y', which='major', labelsize=6)
+        
+        diff = y1 - y2
+        absDiff = np.absolute(diff)
+        absDiffSum = np.sum(absDiff)
+        data.append({ "diff": absDiffSum})
+
     plt.savefig('{}/{}.eps'.format('.', file_name), format='eps', dpi=1000)
+    df = pd.DataFrame(data)
+    sorted = df.sort_values(by=["diff"], ascending=False)
+    sorted.to_csv(os.path.join(".", "{}_kde_differences.csv".format(file_name)),';')
+
+    return 
 
 plt.style.use('seaborn')
 
@@ -64,11 +84,10 @@ print('Mean std:', train_describe[['std']].min()[0])
 
 t0 = train.loc[train['target'] == 0]
 t1 = train.loc[train['target'] == 1]
-features = train.columns.values[2:27]
+features = train.columns.values[2:202]
 
 print("Computing train set features distribution (0 vs 1)...")
 compute_feature_distribution(t0, t1, '0', '1', features, 'feature_distribution')
 
 print("Computing features distribution (train set vs test set)...")
 compute_feature_distribution(train, test, 'zestaw treningowy', 'zestaw testowy', features, "feature_distribution_train_vs_test")
-
