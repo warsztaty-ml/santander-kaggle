@@ -31,9 +31,11 @@ def args():
 
         
 
-def exp_eta(initial, k, min_eta):
+def exp_eta(initial, k, min_eta, max_epochs):
+
+    lrates = [initial * math.exp(-k * epoch) + min_eta for epoch in range(max_epochs + 1)]
     def exp_eta_internal(epoch, epoch_count):
-        lrate = initial * math.exp(-k * epoch) + min_eta
+        lrate = lrates[epoch]
         print(lrate)
         return lrate
     return exp_eta_internal
@@ -49,12 +51,12 @@ def main():
     test_X, test_y, _ = data_processor.process_data(test)
 
     pca_components = 200
-    pca = PCA(n_components=pca_components)
-    train_X_pca = pca.fit_transform(train_X)
-    test_X_pca= pca.transform(test_X)
+    # pca = PCA(n_components=pca_components)
+    # train_X_pca = pca.fit_transform(train_X)
+    # test_X_pca= pca.transform(test_X)
 
-    train = xgb.DMatrix(data=train_X_pca, label=train_y)
-    test = xgb.DMatrix(data=test_X_pca, label=test_y)
+    train = xgb.DMatrix(data=train_X, label=train_y)
+    test = xgb.DMatrix(data=test_X, label=test_y)
 
 
     if file_to_infer is not None:
@@ -72,59 +74,71 @@ def main():
         submission.to_csv("submission.csv", index=False)
 
     else:
-        gamma = 0.4
-        eta = 0.3
-        k = 0.005
-        min_eta = 0.01
-        scpw = 0.11
-        depth = 2
+        for alpha in [0.0, 0.2, 0.5, 1.0, 5.0]:
+            for lmbda in [0.0, 0.2, 0.5, 1.0, 5.0]:
+                gamma = 0.0
+                # alpha = 0.01
+                eta = 0.1
+                mcw = 8
+                subsample = 0.8
+                colsample_bytree = 1.0
+                # k = 0.008
+                # min_eta = 0.01
+                scpw = 9
+                depth = 1
 
 
-        param = {
-                    'max_depth': depth, 
-                    'n_estimators': 100,
-                    'eta':eta, 
-                    'k': k,
-                    'silent':0, 
-                    'gamma': gamma,
-                    'nthread': 4,
-                    'objective':'binary:logistic', 
-                    'eval_metric':['logloss', 'auc'],
-                    'min_child_weight': 1,
-                    'random_state': seed,
-                    'scale_pos_weight': scpw
-        }
 
-        watchlist = [(train, 'train'), (test, 'eval')]
-        num_round = 10000
+                param = {
+                            'max_depth': depth, 
+                            'eta':eta, 
+                            # 'k': k,
+                            'silent':0, 
+                            'gamma': gamma,
+                            'objective':'binary:logistic', 
+                            'eval_metric':['error', 'logloss', 'auc'],
+                            # 'min_child_weight': 1,
+                            # 'random_state': seed,
+                            'min_child_weight': mcw,
+                            'colsample_bytree': colsample_bytree,
+                            'subsample': subsample,
+                            'alpha': alpha,
+                            'lambda': lmbda,
+                            'scale_pos_weight': scpw
+                }
 
-        history = {}
-        bst = xgb.train(param, train, num_round, watchlist, early_stopping_rounds=1000, maximize=True, evals_result=history, callbacks = [xgb.callback.reset_learning_rate(exp_eta(eta, k, min_eta))])
+                watchlist = [(train, 'train'), (test, 'eval')]
+                num_round = 100000
 
-        preds = bst.predict(test)
-        labels = test.get_label()
-        print('error=%f' % (sum(1 for i in range(len(preds)) if int(preds[i] > 0.5) != labels[i]) / float(len(preds))))
+                history = {}
+                # bst = xgb.train(param, train, num_round, watchlist, early_stopping_rounds=25, maximize=True, evals_result=history, callbacks = [xgb.callback.reset_learning_rate(exp_eta(eta, k, min_eta, num_round))])
+                bst = xgb.train(param, train, num_round, watchlist, early_stopping_rounds=1000, maximize=True)
+                best_iteration = bst.best_iteration
 
-        auc = roc_auc_score(labels, preds)
-        print(auc)
+                preds = bst.predict(test, ntree_limit=best_iteration)
+                labels = test.get_label()
+                print('error=%f' % (sum(1 for i in range(len(preds)) if int(preds[i] > 0.5) != labels[i]) / float(len(preds))))
 
-        bst.save_model(model_file)
+                auc = roc_auc_score(labels, preds)
+                print(auc)
 
-        clf = xgb.XGBClassifier(**param)
-        print(clf.get_xgb_params())
-        params = sorted([(k,v) for k,v in clf.get_xgb_params().items()], key=lambda tup: tup[0])
-        
-        print_header = not os.path.isfile(result_file)
-        header = [p[0] for p in params]
-        header.extend(["pca_components", "model", "auc"])
-        values = [p[1] for p in params]
-        values.extend([pca_components, model_file, auc])
+                bst.save_model(model_file)
 
-        with open(result_file, 'a') as f:
-            writer = csv.writer(f)
-            if print_header:
-                writer.writerow(header)
-            writer.writerow(values)
+                clf = xgb.XGBClassifier(**param)
+                print(clf.get_xgb_params())
+                params = sorted([(k,v) for k,v in clf.get_xgb_params().items()], key=lambda tup: tup[0])
+                
+                print_header = not os.path.isfile(result_file)
+                header = [p[0] for p in params]
+                header.extend(["pca_components", "model", "auc"])
+                values = [p[1] for p in params]
+                values.extend([pca_components, model_file, auc])
+
+                with open(result_file, 'a') as f:
+                    writer = csv.writer(f)
+                    if print_header:
+                        writer.writerow(header)
+                    writer.writerow(values)
 
 
 

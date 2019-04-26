@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Model, który zdobył 0.889
 
 import numpy as np  # linear algebra
@@ -13,11 +14,11 @@ EPOCH_NUMBER = 15
 VERBOSE = 2
 
 # Any results you write to the current directory are saved as output.
-INPUT_DIR = "../input/"
+INPUT_DIR = "../data/"
 
 ############################################################################# XGBoost
 modelXGB = XGBRegressor(max_depth=3, learning_rate=0.25, n_estimators=400, booster="dart",
-                        objective="binary:logistic", subsample=1, verbosity=3,
+                        objective="binary:logistic", subsample=1, verbosity=1,
                         colsample_bytree=1, seed=1234)
 
 
