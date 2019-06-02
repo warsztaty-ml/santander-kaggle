@@ -1,7 +1,0 @@
-alpha, base_score,booster,colsample_bylevel,colsample_bytree,eta,eval_metric,gamma,learning_rate,max_delta_step,max_depth,min_child_weight,missing,n_estimators,nthread,objective,reg_alpha,reg_lambda,scale_pos_weight,seed,silent,subsample,verbosity,pca_components,model,auc
-1e-05,0.5,gbtree,1,0.8,0.1,"['error', 'logloss', 'auc']",0,0.1,0,2,10,,100,1,binary:logistic,0,1,1,42,0,0.6,0,200,alpha.model,0.8658292608461721
-0.01,0.5,gbtree,1,0.8,0.1,"['error', 'logloss', 'auc']",0,0.1,0,2,10,,100,1,binary:logistic,0,1,1,42,0,0.6,0,200,alpha.model,0.8659170954831371
-0.1,0.5,gbtree,1,0.8,0.1,"['error', 'logloss', 'auc']",0,0.1,0,2,10,,100,1,binary:logistic,0,1,1,42,0,0.6,0,200,alpha.model,0.8657352635080916
-1,0.5,gbtree,1,0.8,0.1,"['error', 'logloss', 'auc']",0,0.1,0,2,10,,100,1,binary:logistic,0,1,1,42,0,0.6,0,200,alpha.model,0.8657772093060851
-10,0.5,gbtree,1,0.8,0.1,"['error', 'logloss', 'auc']",0,0.1,0,2,10,,100,1,binary:logistic,0,1,1,42,0,0.6,0,200,alpha.model,0.8654589719074034
-100,0.5,gbtree,1,0.8,0.1,"['error', 'logloss', 'auc']",0,0.1,0,2,10,,100,1,binary:logistic,0,1,1,42,0,0.6,0,200,alpha.model,0.865287340851303
