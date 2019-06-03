@@ -113,6 +113,8 @@ venv.bak/
 
 docs/raport.out
 
+*.model
+
 data/
 target/
 /scripts/*.eps
