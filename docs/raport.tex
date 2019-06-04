@@ -57,7 +57,7 @@ bindingoffset=10mm, top=20mm, bottom=20mm}
 \end{tabular}
 \end{table}
 
-\vspace{5 cm}
+\vspace{4 cm}
   \center{\small Warszawa, dnia \today}
 \end{center}
 \end{titlepage}
@@ -70,16 +70,16 @@ bindingoffset=10mm, top=20mm, bottom=20mm}
 
 \section{Opis projektu}
 
-Projekt realizowany w ramach konkursu \textit{Santander Customer Transaction Prediction}\cite{santanderkaggle}. Celem projektu jest opracowanie jak klasyfikatora, który na podstawie dostępnych danych o konsumencie wskaże, czy dokona on transakcji czy też nie. 
+Niniejszy projekt realizowany w ramach konkursu \textit{Santander Customer Transaction Prediction}\cite{santanderkaggle}. Jego celem jest opracowanie jak klasyfikatora, który na podstawie dostępnych danych o konsumencie wskaże, czy dokona on transakcji czy też nie. 
 
 \section{Opis danych}
 
-Do dyspozycji uczestników konkursu organizator przygotował dwa zanonimizowane zbiory danych: \textit{train.csv} oraz \textit{test.csv}. Oba zbiory danych posiadają po 200 tysięcy wierszy. Każdy wiersz posiada identyfikator \textit{ID\_code} oraz 200 anonimowych cech (\textit{var0, var1 ... var199}). Zbiór \textit{train.csv} posiada dodatkowo kolumnę \textit{target} będącą etykietą, przyjmuje ona wartości $0$ lub $1$. Dane z pliku \textit{train.csv} służą do trenowania i wstępnej oceny jakości modelu. Plik \textit{test.csv} służy do oceny modelu przez organizatora konkursu, klasy dla tego zbioru nie są publicznie znane. Zgłoszeniem do konkursu jest plik zestawiający \textit{ID\_code} każdego rekordu z pliku \textit{test.csv} z jego przewidywaną klasą.
+Do dyspozycji uczestników konkursu organizator przygotował dwa zanonimizowane zbiory danych: \textit{train.csv} oraz \textit{test.csv}. Oba zbiory posiadają po 200 tysięcy wierszy. Każdy wiersz składa się z identyfikatora \textit{ID\_code} oraz 200 anonimowych cech (\textit{var0, var1 ... var199}). Zbiór \textit{train.csv} posiada dodatkowo kolumnę \textit{target} będącą etykietą. Przyjmuje ona wartości $0$ lub $1$. Dane z pliku \textit{train.csv} służą do trenowania i wstępnej oceny jakości modelu. Plik \textit{test.csv} służy do oceny modelu przez organizatora konkursu, zatem wartości etykiet dla tego zbioru nie są publicznie znane. Zgłoszeniem do konkursu jest plik zestawiający \textit{ID\_code} każdego rekordu z pliku \textit{test.csv} z jego przewidywaną klasą.
 
 
 \subsection{Przetwarzanie i analiza danych}
 
-Przetwarzanie i analiza danych są często uważane za najważniejsze narzędzia w osiąganiu ponadprzeciętnych wyników w zagadnieniach związanych ze sztuczną inteligencją. Przetwarzanie danych należy rozpocząć od sprawdzenia ich integralności. Przeszukanie wszystkich wierszy obu zbiorów nie wykazało żadnych brakujących pól. Kolejną ważną informacją jest liczba przykładów w obu klasach. Im bardziej nierównomierne są liczności zbiorów, tym trudniej stworzyć model, który nie będzie się przeuczał w stronę wskazywania na liczniejszą klasę. Dla takich problemów nie można również korzystać z miary dokładności jaką jest procent prawidłowych klasyfikacji. W takich przypadkach należy użyć bardziej zaawansowanych metod porównywania modeli klasyfikacyjnych, np. wskaźnika Dice Coefficient. Zbiór treningowy jest podzielony na 20098 (10.049\%) konsumentów, którzy dokonali transakcji oraz 179902 (89.951\%) konsumentów, którzy nie dokonali transakcji (rysunek \ref{classescount}). Dla zbioru testowego nie jesteśmy w stanie określić stosunku obu klas ze względu na brak etykiet. 
+Przetwarzanie i analiza danych są często uważane za najważniejsze narzędzia w osiąganiu ponadprzeciętnych wyników w zagadnieniach związanych ze sztuczną inteligencją. Przetwarzanie danych należy rozpocząć od sprawdzenia ich integralności. Przeszukanie wszystkich wierszy obu zbiorów nie wykazało żadnych brakujących pól. Kolejną ważną informacją jest liczba przykładów w obu klasach. Im bardziej nierównomierne są liczności zbiorów, tym trudniej stworzyć model, który nie będzie się przeuczał w stronę wskazywania na liczniejszą klasę. Dla takich problemów nie powinno się zatem korzystać z miary dokładności jaką jest procent prawidłowych klasyfikacji. W takich przypadkach należy użyć bardziej zaawansowanych metod porównywania modeli klasyfikacyjnych, np. wskaźnika Dice Coefficient. Zbiór treningowy jest podzielony na 20098 (10.049\%) rekordów odpowiadających konsumentom, którzy dokonali transakcji oraz 179902 (89.951\%) rekordów opisujących dane konsumentów, którzy transakcji nie dokonali  (rysunek \ref{classescount}). Dla zbioru testowego nie jesteśmy w stanie określić stosunku obu klas ze względu na brak etykiet. 
 \begin{figure}[H]
 \centering \includegraphics[scale=0.7]{classes.eps}
 \caption{Liczba przykładów w każdej z klas}
