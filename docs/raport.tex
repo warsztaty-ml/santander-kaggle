@@ -18,12 +18,20 @@
 \usepackage{a4wide}
 
 \usepackage{floatrow}
+\usepackage{multirow}
+\usepackage{multicol}
 
 \geometry{left=15mm,right=25mm,%
 bindingoffset=10mm, top=20mm, bottom=20mm}
  
 \floatsetup[longtable]{LTcapwidth=table}
 
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+}
 
 \renewcommand{\maketitle}{
 \begin{titlepage}
@@ -49,6 +57,7 @@ bindingoffset=10mm, top=20mm, bottom=20mm}
 \textit{Autorzy:} &\textbf {Mateusz~Bieńkowski \newline
 	Katarzyna~Gołębiewska \newline
 	Filip~Grajek \newline
+	Michał~Kołodziej \newline
 	Sebastian~Sudra \newline
 	Łukasz~Sznajder \newline
 	Nikodem~Wiśniewski \newline 
@@ -85,11 +94,11 @@ Przetwarzanie i analiza danych są często uważane za najważniejsze narzędzia
 \caption{Liczba przykładów w każdej z klas}
 \label{classescount}
 \end{figure}
-Jak widać, klasy mocno różnią się licznością, co negatywnie wpływa na poziom trudności całego zagadnienia.
+Jak widać, klasy mocno różnią się licznością, co znacznie podnosi poziom trudności całego zagadnienia.
 
 \subsubsection{EDA (Exploratory Data Analysis)}
 
-Eksploracyjne badanie danych jest podstawowym narzędziem w analizie danych pozwalającym na szczegółowy opis, wizualizację oraz badanie danych bez konieczności zakładania hipotez co do tych danych. Jest to w głównej mierze metoda oparta o statystykę, a jej wyniki pozwalają na ukierunkowanie kolejnych badań na konkretne cechy posiadanych danych. 
+Eksploracyjne badanie danych jest podstawowym narzędziem w analizie danych pozwalającym na szczegółowy opis, wizualizację oraz badanie danych bez konieczności zakładania hipotez co do nich. Jest to w głównej mierze metoda oparta o statystykę, a jej wyniki pozwalają na ukierunkowanie kolejnych badań na konkretne cechy posiadanych danych. 
 \newline W tablicy \ref{traindescribe} zestawiono dane statystyczne opisujące każdą z cech (kolumny kolejno: nazwa cechy, średnia, odchylenie standardowe, minimum, kwantyl 25\%, mediana, kwantyl 75\%, maksimum) dla zbioru treningowego.
 
 \begin{longtable}{lrrrrrrr}
@@ -308,7 +317,7 @@ Eksploracyjne badanie danych jest podstawowym narzędziem w analizie danych pozw
  var\_199 &  -3.326537 &  10.438015 & -38.8528 & -11.208475 &  -2.81955 &   4.836800 &  28.5007 \\
 \end{longtable}
 
-Z tabeli \ref{traindescribe} wynika, że odchylenie standardowe dużej liczby cech jest znaczne. Kolejną obserwacją jest podobny zakres wartości danych każdej cechy. Wszystkie wartości ze zbioru treningowego mieszczą się w zakresie $[-91, 75]$, co jest zaskakująco małym przedziałem dla tak dużej liczby cech. Za to średnie wartości poszczególnych atrybutów są bardzo zróżnicowane i wynoszą od $-16.5$ do $24.5$. Warto zwrócić uwagę na zmienną o numerze $68$, dla której minimum wynosi 5.018893, a maksimum 5.0469 (odchylenie standardowe: 0.007186). Jest to zmienna o cecha o najmniejszym rozstrzale wartości.
+Z tabeli \ref{traindescribe} wynika, że odchylenie standardowe dużej liczby cech jest znaczne. Kolejną obserwacją jest podobny zakres wartości danych każdej cechy. Wszystkie wartości ze zbioru treningowego mieszczą się w zakresie $[-91, 75]$, co jest zaskakująco małym przedziałem dla tak dużej liczby cech. Za to średnie wartości poszczególnych atrybutów są bardzo zróżnicowane i wynoszą od $-16.5$ do $24.5$. Warto zwrócić uwagę na zmienną o numerze $68$, dla której minimum wynosi 5.018893, a maksimum 5.0469 (odchylenie standardowe: 0.007186). Jest to cecha o najmniejszym rozstrzale wartości.
 \newline 
 
 Istotny może być również rozkład wartości poszczególnych cech w zależności od klasy.
@@ -321,7 +330,7 @@ Rysunek \ref{featuresDistribution25} przedstawia wizualizację tychże rozkład�
 \label{featuresDistribution25}
 \end{figure}
 
-Wnioskując z omawianych wizualizacji, rozkład wartości jest zbliżony w obu klasach dla wszystkich rozważanych kolumn. Wykresy niemalże pokrywają się. Jednak część cech (np. dla var0, var2, var6 itd.) charakteryzuje się delikatnymi rozbieżnościami. Można wnioskować, że będą one szczególnie istotne w procesie klasyfikacji.
+Wnioskując z omawianych wizualizacji, rozkład wartości jest zbliżony w obu klasach dla wszystkich rozważanych kolumn i ma charakter rozkładu Gaussa. Wykresy odpowiadające obu klasom niemalże pokrywają się. Jednak część cech (np. dla var0, var2, var6 itd.) charakteryzuje się delikatnymi rozbieżnościami. Można wnioskować, że będą one szczególnie istotne w procesie klasyfikacji.
 
 Aby porównać istotność cech pod omawianym względem i uszeregować je od najistotniejszej (dla klasyfikatora) do wnoszącej najmniej informacji, potrzebujemy pewnej metryki opisującej różnicę w rozkładzie wartości danej cechy w zależności od klasy.   
 \newline Oznaczmy jako $Z_0$ figurę składającą się ze wszystkich punktów pod wykresem rozkładu wartości dla klasy 0. Analogicznie, jako $Z_1$ oznaczmy figurę składającą się ze wszystkich punktów pod wykresem rozkładu wartości dla klasy 1.
@@ -392,8 +401,8 @@ Warto też porównać rozkład cech zbioru treningowego i testowego. Wizualizacj
 Jak można zauważyć, zbiory testowy i treningowy są łudząco podobne pod względem dystrybucji wartości poszczególnych zmiennych. Stanowi to dużą zaletę. Prawdopodobnie wykorzystanie informacji z kolumn o największych rozbieżnościach przy podziale na klasy (w zbiorze treningowym) przyniesie sukces również w przypadku zbioru testowego.
 
 \subsubsection{PCA (Principal Component Analysis)}
-PCA sciśle wiąże sie z metodami wyboru cech i algorytmami które to realizują.
-Dane składają się z 200 cech liczbowych, dlatego warto sprawdzić czy wszystkie wprowadzają nową informację. Może się tak zdażyć, że niektóre z tych cech są ze sobą skorelowane na tyle, że można niektóre z nich pominąć w modelu nie tracąc na jego jakości. Ponad to może się tak zdażyć, że użycie wszystkich dostępnych cech może dać w rezultacie gorsze wyniki niż użycie podzbioru zbioru cech. W celu zbadania, które z dostępnych cech mają istotny wpływ na dany problem przeprowadza się analizę PCA. Celem takiej analizy jest znalezienie zbioru cech, których użycie zmaksymalizuje jakość modelu przy jednoczesnym zminimalizowaniu zbioru cech użytych w danym problemie.
+PCA sciśle wiąże się z metodami wyboru cech i algorytmami, które ten wybór realizują.
+Dane składają się z 200 cech liczbowych, dlatego warto sprawdzić, czy wszystkie wprowadzają nową informację. Może się tak zdarzyć, że niektóre z tych cech są ze sobą skorelowane na tyle, że można niektóre z nich pominąć w modelu, nie tracąc na jego jakości. Co więcej, użycie wszystkich dostępnych cech może dać w rezultacie gorsze wyniki niż użycie podzbioru zbioru cech. W celu zbadania, które z dostępnych cech mają istotny wpływ na dany problem przeprowadza się analizę PCA. Celem takiej analizy jest znalezienie zbioru cech, których użycie zmaksymalizuje jakość modelu przy jednoczesnym zminimalizowaniu zbioru cech użytych w danym problemie.
 \newline
 Na poniżej została zaprezentowana macierz korelacji cech zbioru testowego.
 \begin{figure}[H]
@@ -403,28 +412,62 @@ Na poniżej została zaprezentowana macierz korelacji cech zbioru testowego.
 \label{feature_correlation_matrix}
 \end{figure}
 
-Z powyższego wykresu możemy odczytać to że cechy nie są ze sobą skorelowane lub są w bardzo małym stopniu. \\
+Z powyższego wykresu możemy odczytać, że cechy nie są ze sobą skorelowane lub są w bardzo małym stopniu. \\
 \\
-\begin{tabular}{llr}
-   &   &        Wartość korelacji \\
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+ \hline
+ Cecha 1  & Cecha 2  &        Wartość korelacji \\
+    \hline
+     \hline
 var\_75 & var\_139 &  0.009868 \\
+ \hline
 var\_96 & var\_143 &  0.008829 \\
+ \hline
 var\_31 & var\_132 &  0.008714 \\
+ \hline
 var\_2 & var\_164 &  0.008614 \\
+ \hline
 var\_122 & var\_164 &  0.008513 \\
+ \hline
 var\_36 & var\_175 &  0.008424 \\
+ \hline
 var\_103 & var\_110 &  0.008405 \\
+ \hline
 var\_40 & var\_163 &  0.008335 \\
+ \hline
 var\_19 & var\_187 &  0.008201 \\
+ \hline
 var\_92 & var\_164 &  0.008058 \\
+ \hline
 \end{tabular}
-
+\caption{10 najbardziej skorelowanych cech.}
+\end{table}
 Powyższa tabela przedstawiająca 10 najbardziej skorelowanych cech w zbiorze testowym upewnia nas, że wygląd macierzy korelacji przedstawionej na rysunku \ref{feature_correlation_matrix} to nie błąd, a jedynie fakt, że cechy są od siebie niezależne.
 Taka informacja nie pozwala nam na odrzucenie niektórych kolumn, ponieważ na wykresie widzimy, że potencjalnie każda cecha wnosi coś nowego i może mieć istotny wpływ na jakość przyszłego modelu.
 \newline
-Przy użyciu dostępnych bibliotek takich jak \textit{sklearn} w języku Python można wykonać redukcję wymiarowości problemu przy pomocy dedytkowanej do tego klasy \textit{PCA}. Przy jej pomocy jesteśmy w stanie zredukować praktycznie dowolnie wymiar zadania, większym lub miejszym kosztem.
-Na przykład przy zachowaniu 95\% wariancji dostępny w bibiotece algorytm redukuje wymiar do 190 cech, co jeszcze bardziej pokazuje, że każda cecha może mieć istotny wpływ na wynik (liniowa zależność zachowania wariancji do ilości cech). Jednak aby się o tym przekonać w 100-u procentach nie zbędne będą testy na konkretnych modelach i algorytmach wybranych do rozwiązania tego problemu.
+Przy użyciu dostępnych bibliotek takich jak \textit{sklearn} w języku Python, można wykonać redukcję wymiarowości problemu przy pomocy dedytkowanej do tego klasy \textit{PCA}. Dzięki niej jesteśmy w stanie zredukować praktycznie dowolnie wymiar zadania, większym lub mniejszym kosztem.
+Na przykład przy zachowaniu 95\% wariancji dostępny w bibliotece algorytm redukuje wymiar do 190 cech, co jeszcze bardziej pokazuje, że każda cecha może mieć istotny wpływ na wynik (liniowa zależność zachowania wariancji do ilości cech). Jednak aby się o tym przekonać w 100-u procentach niezbędne będą testy na konkretnych modelach i algorytmach wybranych do rozwiązania tego problemu.
 
+
+\subsubsection{Outliers}
+Dane ze zbioru testowego zostały sprawdzone pod kątem wystąpienia w nich tak zwanych \textit{outliers} (elementy zbioru znacznie odbiegające od pozostałych). Wynik tego sprawdzenia prezentuje poniższy wykres.
+\begin{figure}[H]
+\centering 
+\includegraphics[width = 472pt]{outliers.eps}
+\caption{Liczba outliers dla poszczególnych cech zbioru testowego}
+\label{outliers}
+\end{figure}
+
+Powyższy wykres przedstawia liczbę outliers biorąc pod uwagę wartości z poszczególnych cech(kolumn).
+Do przygotowania powyższego wykresu zostało przyjęte założenie, że za outlier-a uznajemy element, którego wartość $x$ danej cechy nie znajduje się w zbiorze $X$.
+\begin{center}
+Q1, Q3 - odpowiednio pierwszy i trzeci kwartyl rozkładu danej cechy.\\
+IQR = Q3-Q1\\
+    $X=\{x\in R : x \in \left[Q1-2*IQR, Q3+2*IQR\right]\}$
+\end{center}
+Z wykresu można odczytać, że dla większości cech outliers nie występują lub ich liczba jest poniżej 10. Tylko w kilku przypadkach liczba outliers przekracza 20 i nie jest wykluczone, że outliers różnych cech pojawiają się dla tego samego elementu zbioru. W odniesieniu do liczności całego zbioru liczba ta jest mała i nie przekracza 1\%. 
 \section{Ocena modeli}
 
 Sposób oceny modeli został narzucony przez organizatorów konkursu. Ze względu na nierównomierny podział klas, do oceny modeli wykorzystana jest miara AUC, którą można uzyskać poprzez policzenie pola pod krzywą ROC.
@@ -435,7 +478,7 @@ Sposób oceny modeli został narzucony przez organizatorów konkursu. Ze względ
 \subsection{Regresja SVM}
 Jednym z modeli dla których podjęto próbę rozwiązania problemu są wektory SVM. Niestety dla danych treningowych, których jest około $200$ tys. przeprowadzenie obliczeń jest praktycznie niemożliwe. Dane zostały zredukowane wykorzystując metodę \textit{undersampling} dzięki której uzyskano koło $40$ tys danych i dodatkowo zachowano balans pomiędzy danymi z odpowiedziami 0 i 1.
 
-Na samym początku wykokano testy dla różnych kerneli. Wyniki tych testów zostały przedstawione w tabeli nr \ref{tab:svm_kernels}. Dla kernela \textit{rbf} metoda zwróciła najlepszy wynik.
+Na samym początku wykonano testy dla różnych kerneli. Wyniki tych testów zostały przedstawione w tabeli nr \ref{tab:svm_kernels}. Dla funkcji jądrowej \textit{rbf} metoda zwróciła najlepszy wynik.
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|}
@@ -511,8 +554,6 @@ W kolejnych testach sprawdzano działanie modelu zmieniając parametry: eps, C i
 \subsection{Sieć neuronowa}
 Użycie standardowego modelu wielowarstwowej sieci perceptronowej nie przyniosło zadowalających rezultatów. Uzyskany został wynik około 0.85. Okazało się, że użycie konwolucyjnej sieci neuronowej znacznie poprawiło wynik. Sama zmiana modelu sieci pozwoliła na osiągnięcie rezultatu 0.892. Spróbujmy wyjaśnić skąd ta różnica. Poniżej zamieszczony został dokładny model sieci.
 
-\newpage
-
 \begin{lstlisting}[caption={Model sieci CNN}, captionpos=b]
 Layer (type)                 Output Shape              Param #   
 =================================================================
@@ -532,12 +573,379 @@ Zobaczmy, że pierwsza warstwa ma zaledwie 64 parametry (32 filtry rozmiaru 1x1 
 
 Konwolucja pozwoliła na działanie na każdej z cech niezależnie (przed zastosowaniem warstwy Flatten). Jest to skuteczne, ponieważ de facto nastąpiła próba odzyskania danych oryginalnych przed wstępnym przetworzeniem przez Santander i możliwość podziałania na danych bardziej skorelowanych. 
 
-Ze względu na niezrównoważenie klas do modelu wprowadzono oversampling. Polegało to na nadaniu wag klasom. Taką obsługę oversamplingu dostarcza \textit{keras}, co ostatecznie okazało się delikatnie skuteczniejsze niż samemu generowanie nowych danych. Ponadto zastosowano komitet 30 sieci. Jako rezultat końcowy były brane średnie arytmetyczne z uzyskanych rezultatów sieci. Ostateczny wynik w prywatnym rankingu zawodów wyniósł \textbf{0.89823}, co pozwoliło na zajęcie miejsca w top 49\% najlepszych wyników. Z samego modelu sieci już niewiele dałoby się wycisnąć. Na uzyskanie lepszego wyniku (powyżej 0.9) potrzebna byłaby dogłębna analiza danych i sensowna rozbudowa wektora cech (feature engineering) z 200 nawet i do 1000. Zajęcie czołowego miejsca w konkursie zależało nie od użytego modelu, lecz od jakości EDA.
+Ze względu na niezrównoważenie klas do modelu wprowadzono oversampling. Polegało to na nadaniu wag klasom. Taką obsługę oversamplingu dostarcza \textit{keras}, co ostatecznie okazało się delikatnie skuteczniejsze niż samemu generowanie nowych danych. Ponadto zastosowano komitet 30 sieci. Jako rezultat końcowy były brane średnie arytmetyczne z uzyskanych rezultatów sieci. Ostateczny wynik w prywatnym rankingu zawodów wyniósł \textbf{0.89823}, co pozwoliło na zajęcie miejsca w top 49\% najlepszych wyników. Z samego modelu sieci już niewiele dałoby się poprawić. Na uzyskanie lepszego wyniku (powyżej 0.9) potrzebna byłaby dogłębna analiza danych i sensowna rozbudowa wektora cech (feature engineering) z 200 nawet i do 1000. Zajęcie czołowego miejsca w konkursie zależało głównie od jakości EDA.
 
 \section{Modele niekonwencjonalne}
 
-\section{Wyniki i podsumowanie}
+\subsection{Boosting drzew decyzyjnych}
 
+\subsubsection{Opis metody}
+
+Pierwszym niekonwencjonalnym algorytmem użytym jest gradient boosting drzew decyzyjnych. Implementacja metody pochodzi z biblioteki xgboost \cite{xgboost}. Ogólnie metody boostingu polegają na tworzenu komitetu składającego się z wielu słabych klasyfikatorów. Ważne jest tutaj to, że w przypadku boostingu kolejne modele są tworzone sekwencyjnie, późniejsze zależą zatem od poprzednich. To jest główną różnicą do baggingu (czyli np. metoda Random Forest), gdzie modele w komitecie są niezależne od siebie. Tworzenie kolejnych klasyfikatorów, uczonych na błędach poprzednich, może prowadzić do overfittingu, co będzie widoczne przy wynikach.
+
+Jak było wcześniej wspomniane, korzystamy z gradient boostingu, co oznacza, że w procesie uczenia jest minimalizowana pewna funkcja straty za pomocą gradientowych metod optymalizacji. W naszym przypadku tą funkcją optymalizowaną jest entropia binarna:
+
+\begin{equation}
+    l(y, p) = -\frac{1}{N} \sum_{i = 1}^{N} \left[ y_i log p_i + (1 - y_i) log (1 - p_i) \right]
+\end{equation},
+gdzie $y$ jest wektorem prawdziwych wartości do przewidzenia ze zbioru treningowego, $p$ jest wektorem prawdopodobieństw wyznaczonych przez metodę dla danych treningowych, a $N$ jest licznością zbioru treningowego. Funkcja straty ma również drugi składnik, tak zwany składnik regularyzacji, który ma karać złożone modele i tym samym pomóc uniknąć przetrenowania.
+
+W konkursie celem było uzyskanie jak największej miary AUC (powierzchnia pod krzywą ROC). Jednak tak miara nie jest różniczkowalna, dlatego została zastosowana funkcja straty wyżej wymieniona. 
+
+Drzewa używane w tym modelu to są tak zwane drzewa CART (classification and regression trees). Różnią się od zwykłych drzew decyzyjnych tym, że w liściach nie znajduje się klasa, do której należy dany obiekt, lecz pewna wartość (waga), z której można otrzymać prawdopodobieństwo przynależności do jednej z klas.
+
+Metoda posiada wiele hiperparametrów, niemożliwe byłoby znalezienie najlepszej kombinacji, dlatego też hiperparametry były optymalizowane sekwencyjnie. Następujące parametry zostały wzięte pod uwagę:
+
+\begin{enumerate}
+    \item scale\_pos\_weight - przez tą wartość są skalowane wartości funkcji straty dla przypadków pozytywnych (czyli tych, których etykietą jest jednyka). Można tego parametru użyć, aby poradzić sobie z niezbalansowanym zbiorem danych, jak w naszym przypadku. Przypadków pozytywnych jest w zbiorze danych około dziewięć razy mniej niż negatywnych, więc otrzymują one wagę dziewięć. Alternatywnym rozwiązaniem do tego, jest użycie oversamplingu do zrównoważenia zbiorów, a następnie trenowanie z scale\_pos\_weight równym jeden. Oba podejścia zostały przetestowane.
+    
+    \item liczba kolumn użytych do przewidywania - co prawda analiza danych wykazała, ze kolumny są nieskorelowane ze sobą, jednak warto to również sprawdzić w praktyce. Do wybierania najbardziej odpowiednich cech, została użyta metoda ANOVA.
+    
+    \item maksymalna wysokość drzew decyzyjnych - głębsze drzewa lepiej potrafią oddać strukturę danych treningowych, ale tym samym mogą prowadzić do przetrenowania.
+    
+    \item min\_child\_weight - parametr sterujący kiedy algorytm przestaje dodawać kolejne liście. Większe wartości powinny powodować, że algorytm będzie bardziej ogólny, nie będzie się uczył dokładnych szczegółów, przez co być może uda się uniknąć przetrenowanie. Za duże wartości z drugiej strony mogą powodować, że model nie będzie w stanie się nauczyć zależności. Ten parametr jest ściśle związany z wysokością drzewa, tak więc oba parametry były optymalizowane jednocześnie. 
+    
+    \item subsample - frakcja obserwacji wylosowana do tworzenia kolejnego drzewa. Jeżeli wartość tego parametru jest mniejsza niż jeden, to przy tworzeniu drzewa jest losowany tylko pewien procent obserwacji. Mniejsze wartości zatem przeciwdziałają przetrenowaniu, algorytm nie może nauczyć się "na pamięć" całego zbioru treningowego, jak zawsze tylko część widzi.
+    
+    \item colsample\_by\_tree - parametr bardzo podobny do subsample, tylko że tym razem do tworzenia drzewa jest wybierany tylko pewien podzbiór cech (kolumn). Oba parametry osiągają podobny cel, były zatem równocześnie optymalizowane.
+    
+    \item eta - współczynnik uczenia dla metody gradientowej. Małe wartości wydłużają proces uczenia, algporytm musi wykonać więcej kroków, jednak za duże wartości mogą spowodować, że poszukiwane optimum lokalne zostanie przeskoczone.
+    
+    % \item alfa - współczynnik regularyzacji L1, lambda - współczynnik regularyzacji L2. Oba współczynniki sterują wielkością kary za skomplikowanie modelu. Regularyzacja L1 wymusza, żeby jak najwięcej wag (czyli wartości w liściach) było zerowych, z drugiej strony regularyzacja L2 powoduje małe (co do modułu), ale niekoniecznie zerowe wagi. Zwiększenie alfy lub lambda powoduje wytrenowanie modelu bardziej odpornego na przetrenowanie. Oczywiście zbyt duże wartości spowodują, że kara za skomplikowanie modelu zdominuje w funkcji straty wartość błędu klasyfikacji i model w ogóle nie będzie się uczył.
+
+\end{enumerate}
+
+Zbiór danych udostępniony w ramach konkursu został podzielony na zbiór walidacyjny (20 \%) i treningowy (80 \%). Na zbiorze treningowych było przeprowadzane uczenie modelu i po każdej iteracji była obliczana jakość modelu (zarówno funkcja straty jak i miara AUC) i jeżeli po 25 iteracjach (jedna iteracja to wygenerowanie jednego nowego drzewa) nie nastąpiła poprawa miary AUC to uczenie było przerywane i był zwracany najlepszy uzyskany model (najlepszy w sensie funkcji straty). 
+
+W tabeli \ref{tab:xgboost_default_params} zostały przedstawione domyślne wartości parametrów z których cały proces uczenia został wystartowany.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l | c }
+        Parametr & Wartość \\ \hline
+        scale\_pos\_weight & 9 \\
+        liczba cech & 200 \\
+        maks. wysokość & 5 \\
+        min\_child\_weight & 1 \\
+        subsample & 1 \\
+        colsample\_by\_tree & 1 \\
+        eta & 0.2 \\
+        % alfa & 0 \\
+        % lambda & 1 \\
+    \end{tabular}
+    \caption{Domyślne wartości hiperparametrów użytych w boostingu drzew}
+    \label{tab:xgboost_default_params}
+\end{table}
+
+
+\subsubsection{Radzenie sobie z niezbalansowanym zestawem danych}
+
+Pierwszą kwestią do ustalenia przed wyznaczaniem reszty hiperparametrów było wybranie sposobu jak poradzić sobie z brakiem balansu w danych. Metoda wykorzystująca losowy oversampling uzyskała wartość AUC równą \textbf{0.8759}, zaś metoda korzystająca z niezbalansowanego zbioru i skalowania wagi błędu dla mniej licznej (pozytywnej) klasy uzyskała \textbf{0.8776}. Jak widać, obie metody dają bardzo podobny wynik, jednak oversampling ma jedną podstawową wadę: w każdej iteracji model jest trenowany na znacznie większej ilości obserwacji, tak więc każda iteracja dłużej trwa (prawie dwa razy dłużej). Dlatego dalsze etapy wykorzystują wersję bez oversamplingu i z scale\_pos\_weight równym 9.
+
+\subsubsection{Liczba cech}
+
+Następnie zostało zbadane, czy może wzięcie mniejszej liczby cech pod uwagę może dać lepszy wynik. Tak jak zostało to podane powyżej, do wybrania cech została użyta metoda ANOVA. Wyniki zostały przedstawione na rysunku \ref{fig:xgboost_feature_count}, a dokładne wartości miary AUC podane w tablicy \ref{tab:xgboost_feature_count}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{xgboost/feature_count.png}
+    \caption{Wartość miary AUC w zależności od liczby wybranych cech}
+    \label{fig:xgboost_feature_count}
+\end{figure}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|}
+        \hline
+        Liczba cech & 10 & 20 & 50 & 75 & 100 & 120 & 150 & 180 & \textbf{200} \\ \hline
+        AUC & 0.7101 & 0.7628 & 0.8319 & 0.8548 & 0.8670 & 0.8734 & 0.8772 & 0.8755 & \textbf{0.8776} \\ \hline
+    \end{tabular}
+    \caption{Wartość miary AUC w zależności od liczby wybranych cech}
+    \label{tab:xgboost_feature_count}
+\end{table}
+
+Przeprowadzone testy potwierdzają tezę zespołu od wstępnego przetwarzania danych, cechy są od siebie niezależne, wybranie wszystkich zatem nie pogarsza wyniku. Wręcz przeciwne, daje to w tym przypadku najlepszy wynik, chociaż wszystkie wyniki dla liczby cech większej równej 120 są raczej porównywalnie dobre. Do dalszych analiz będą więc używane wszystkie cechy, żadnej nie trzeba pomijać.
+
+Patrząc na to jak się model uczył (rysunek \ref{fig:xgboost_training_overfitting}) widać niestety, że model jest przetrenowany, dla zestawu treningowego AUC osiąga prawie 1.0, podczas gdy dla walidacyjnego nie potrafi osiągnąć 0.88. Podobnie jest z funkcją straty, model znacznie lepiej uczy się zbioru treningowego. Najwyraźniej domyślna maksymalna wysokość drzew jest zbyt duża, dlatego ten parametr był następnie badany.
+
+\begin{figure}[h]
+    \centering
+\includegraphics[width=0.45\textwidth]{xgboost/overfitting_loss.png}
+\includegraphics[width=0.45\textwidth]{xgboost/overfitting_auc.png}
+    \caption{Wartości funkcji straty i miary AUC w zależności od iteracji dla domyślnych parametrów}
+    \label{fig:xgboost_training_overfitting}
+\end{figure}
+
+\subsubsection{Wysokość drzew i min\_child\_weight}
+
+Faktycznie analizując wyniki z tabeli \ref{tab:xgboost_depth} możemy zauważyć, że mniejsze wysokości znacznie lepiej się sprawują niż domyślna wartość. Widać, że dobrany model był zbytnio złożony, po trenowaniu nie był wystarczająco ogólny. Tą samą tendencję widać dla parametru min\_child\_weight, tu dla większych wartości wyniki są trochę lepsze. Większe wartości tego parametru oznaczają, ze drzewa będą miały mniej liści, czyli model będzie mniej skomplikowany.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|}
+        \hline
+         & &  \multicolumn{8}{c|}{min\_child\_weight}  \\ \hline
+        \multirow{6}{*}{Wysokość} & & 0.5  & 1 & 2 & 4 & 6 & 8 & 10 & 12 \\ \cline{2 - 10}
+        & 1 & 0.8965 & 0.8965 & 0.8965 & 0.8965 & 0.8965 & \textbf{0.8970} & 0.8964 & \textbf{0.8970} \\ \cline{2-10}
+        & 2 & 0.8931 & 0.8931 & 0.8929 & 0.8934 & 0.8926 & 0.8925 & 0.8930 & 0.8931 \\ \cline{2 - 10} 
+        & 3 & 0.8897 & 0.8894 & 0.8890 & 0.8890 & 0.8884 & 0.8883 & 0.8885 & 0.8879 \\ \cline{2 - 10} 
+        & 4 & 0.8837 & 0.8835 & 0.8831 & 0.8841 & 0.8839 & 0.8835 & 0.8832 & 0.8837 \\ \cline{2 - 10} 
+        & 5 & 0.8778 & 0.8776 & 0.8783 & 0.8771 & 0.8779 & 0.8759 & 0.8799 & 0.8778 \\ \cline{2 - 10} 
+        & 6 & 0.8698 & 0.8697 & 0.8693 & 0.8716 & 0.8708 & 0.8705 & 0.8794 & 0.8717 \\ \hline
+
+    \end{tabular}
+    \caption{Wartości miary AUC dla różnych maksymalnych wysokości drzew i wartości parametru min\_child\_weight}
+    \label{tab:xgboost_depth}
+\end{table}
+
+Do dalszych analiz została wybrana maksymalna wysokość drzew równa jeden, a wartość parametru min\_child\_weight równa osiem. Patrząc na proces uczenia dla drzew o wysokości jeden (rysunek \ref{fig:xgboost_training_depth1}, widać że zjawisko przetrenowania zostało znacznie zmniejszone, miara AUC dla zbioru treningowego nie osiąga już 1.0, jest bliższa miary dla zbioru walidacyjnego. Co więcej, im niższe drzewa, tym mniej trwa jedna iteracja algorytmu, za to liczba iteracji znacznie rośnie (prawie 1200 zamiast około 350). 
+
+\begin{figure}[h]
+    \centering
+\includegraphics[width=0.48\textwidth]{xgboost/depth1_loss.png}
+\includegraphics[width=0.45\textwidth]{xgboost/depth1_auc.png}
+    \caption{Wartości funkcji straty i miary AUC w zależności od iteracji dla drzew o maksymalnej wysokości 1}
+    \label{fig:xgboost_training_depth1}
+\end{figure}
+
+\subsubsection{Colsample\_by\_tree i subsample}
+
+Kolejne parametry, które sterują stopniem skomplikowania modelu są colsample\_by\_tree i subsample. W tablicy \ref{tab:xgboost_sample} są przedstawione dokładne wartości miary AUC dla różnych kombinacji tych parametrów.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+         & &  \multicolumn{4}{c|}{colsample\_by\_tree}  \\ \hline
+        \multirow{6}{*}{subsample} & & 0.4 & 0.6 & 0.8 & 1.0 \\ \cline{2 - 6}
+& 0.4 & 0.8964 & 0.8975 & 0.8967 & 0.8950 \\ \cline{2 - 6} 
+& 0.6 & 0.8964 & 0.8950 & 0.8962 & 0.8966 \\ \cline{2 - 6} 
+& 0.8 & 0.8973 & 0.8976 & 0.8965 & \textbf{0.8977} \\ \cline{2 - 6} 
+& 1 & 0.8970 & 0.8963 & 0.8970 & 0.8970 \\ \hline
+
+    \end{tabular}
+    \caption{Wartości miary AUC dla różnych wartości colsample\_by\_tree i subsample}
+    \label{tab:xgboost_sample}
+\end{table}
+
+Widać wyraźnie, że mniejsze wartości parametrów nie poprawiają jakości modelu, to oznacza że poprzez zastosowanie wielu niskich drzew, model jest już wystarczająco ogólny, nie trzeba przy trenowaniu losowo pomijać kolumn lub wierszy. Najlepszy wynik został uzyskany dla subsample równego 0.8 i colsample\_by\_tree równego 1.0. Oznacza to że przy tworzeniu kolejnego drzewa brane są pod uwagę wszystkie kolumny i losuje się 80\% z wierszy. Dla tych wartości parametrów zostały też przeprowadzone kolejne analizy.
+
+\subsubsection{Współczynnik uczenia eta}
+
+Ostatnim optymalizowanym parametrem był współczynnik uczenia. Szczególnie mniejsze wartości mogą być tutaj ciekawe, mogę spowodować, że algorytm przy schodzeniu po gradiencie znajdzie jakieś minimum, które wcześniej pomijał przez wykonywanie zbyt dużych kroków. Wyniki można zobaczyć w tablicy \ref{tab:xgboost_eta}.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+        eta & AUC \\ \hline
+        0.5 & 0.8940 \\ \hline 
+        0.2 & 0.8977 \\ \hline 
+        0.15 & \textbf{0.8978} \\ \hline 
+        0.1 & 0.8971 \\ \hline 
+        0.05 & 0.8976 \\ \hline 
+        0.02 & 0.8967 \\ \hline 
+        0.01 & 0.8969 \\ \hline 
+        0.005 & 0.8949 \\ \hline 
+        0.001 & 0.5554 \\ \hline
+    \end{tabular}
+    \caption{AUC dla różnych wartości współczynnika uczenia eta}
+    \label{tab:xgboost_eta}
+\end{table}
+
+Zgodnie z oczekiwaniami, zwiększenie współczynnika uczenia nie poprawiło jakości modelu. Tak samo zbyt małe wartości, jak na przykład 0.001 powodowały za wolne uczenie i przez to zwracały niedouczony model. Dla pośrednich wartości (0.2, 0.15, 0.1, 0.05, 0.02, 0.01) został przeprowadzony kolejny eksperyment, mianowicie liczba iteracji, po której uczenie jest przerywane, jeżeli nie nastąpiła poprawa miary AUC, została zwiększona z 25 do 1000. To ma dać szansę mniejszym współczynnikom uczenia, które po prostu czasami potrzebują więcej niż 25 iteracji, aby znaleźć odpowiedni kierunek w gradiencie, wzdłuż którego nastąpi poprawa modelu. Wyniki tego eksperymentu są przedstawione w tabeli \ref{tab:xgboost_eta_longer}.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+        eta & AUC \\ \hline
+        0.2 & 0.8977 \\ \hline 
+        0.15 & 0.8978 \\ \hline 
+        0.1 & \textbf{0.8980} \\ \hline 
+        0.05 & \textbf{0.8980} \\ \hline 
+        0.02 & 0.8979 \\ \hline 
+        0.01 & \textbf{0.8980} \\ \hline 
+    \end{tabular}
+    \caption{AUC dla różnych wartości współczynnika uczenia eta i dłuższym okresie uczenia}
+    \label{tab:xgboost_eta_longer}
+\end{table}
+
+Widać, że w tym przypadku niskie współczynniki uczenia lepiej wypadają, niż wtedy gdy miały mniejszą liczbę iteracji, aby poprawić model, niemniej jednak wzięcie niższego eta niż 0.1 nie ma sensu, wydłuża to znacznie uczenie bez znaczącej poprawy.
+
+\subsubsection{Podsumowanie boostingu}
+
+W tabeli \ref{tab:xgboost_best_params} zostały przedstawione ostatecznie wybrane parametry modelu. Z procesu wyznaczania tych parametrów, można wywnioskować, że najważniejsze było odpowiednie dobranie maksymalnej wysokości drzew, to pozwoliło na tyle uprościć model, żeby podczas treningu nadal pozostał ogólny i tym samym zredukować zjawisko przetrenowania. Drugim wnioskiem jest to, że im więcej parametrów już zostało ustalonych, tym mniejsze poprawy wnosiły kolejne zmiany innych parametrów. 
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l | c }
+        Parametr & Wartość \\ \hline
+        scale\_pos\_weight & 9 \\
+        liczba cech & 200 \\
+        maks. wysokość & 1 \\
+        min\_child\_weight & 8 \\
+        subsample & 0.8 \\
+        colsample\_by\_tree & 1 \\
+        eta & 0.1 \\
+        % alfa & 0 \\
+        % lambda & 1 \\
+    \end{tabular}
+    \caption{Najlepsze wartości hiperparametrów użytych w boostingu drzew}
+    \label{tab:xgboost_best_params}
+\end{table}
+
+Na zestawie testowym udostępnionym przez platformę kaggle (bez etykiet, jakość rozwiązania jest oceniana przez załadowanie pliku csv z wyjściem modelu na stronie internetowej), model korzystający z wyżej wymienionych parametrów uzyskał miarę AUC równą 0.8978, czyli bardzo zbliżoną do tego, co udało się uzyskać na zbiorze walidacyjnym. Niestety model był gotowy dopiero po zakończeniu konkursu, w chwili zakończenia konkursu najlepszy nasz model korzystający z boostingu drzew uzyskał wynik 0.8958, co dało 5244 pozycję z 8802 uczestników konkursu.
+
+\subsubsection{Instrukcja uruchomienia boostingu}
+
+Boosting został zaimplementowany w Pythonie i można go uruchomić jako aplikację konsolową:
+
+\begin{lstlisting}
+boost.py [-h] [--seed=SEED] [--infer=INFER] [--ratio=RATIO]
+[--results=RESULTS] [-c CONFIG] [-m MODEL] input_data
+\end{lstlisting}
+
+Znaczenie parametrów:
+
+\begin{itemize}
+    \item -h: wyświetlenie pomocy
+    \item --seed: seed dla generatora liczb losowych, używany aby mieć powtarzalne wyniki (domyślnie None, wtedy seed nie będzie uzywany, dla każdego uruchomienia będa inne wyniki)
+    \item --infer: ścieżka do zbioru testowego, jeśli zostanie podana ta opcja, to zamiast uczyć model, uruchamiany jest tryb predykcji i tworzony plik submission.csv z wynikami dla podanego zbioru danych. Ten plik potem można przesłać do serwerów kaggle w ramach sprawdzenia jakości klasyfikatora.
+    \item --ratio: liczba rzeczywista, stosunek wierszy używanych do treningu do wszystkich wierszy. Domyślnie 0.8, czyli 80\% wierszy tworzy zbiór uczący, reszta (20 \%) zbiór walidacyjny.
+    \item --results: ścieżka do pliku csv gdzie zostaną dopisane wyniki modelu (jego parametry oraz wartości miar takich jak AUC). Jeśli plik nie istnieje to zostanie stworzony. Domyślnie \verb"results.csv".
+    \item -c: ścieżka do pliku json z konfiguracją modelu. Przykładowe pliki konfiguracyjne są dostępne w folderze boost-configs. Domyślnie \verb"boost-configs/default.json".
+    \item -m: ścieżka do modelu, w trybie treningu jest to ścieżka pod którą zostanie zapisany wytrenowany model, w trybie predykcji ścieżka do modelu wykorzystanego do predykcji.
+    \item input{\_}data: ścieżka do pliku csv w którym znajdują się dane treningowe. Jedyny tak naprawdę wymagany parametr, nie posiada domyślnej wartości, może być podany w dowolnym miejscu. Trzeba również podać w trybie predykcji, żeby skrypt dobrze przeskalował dane wejściowe.
+\end{itemize}
+
+\noindent Przykładowe wywołania:
+
+\noindent Trening:
+\begin{lstlisting}
+./boost.py ../data/train.csv --seed=42 -m new.model 
+-c boost-configs/best.json --results=results.csv
+\end{lstlisting}
+
+\noindent Predykcja:
+\begin{lstlisting}
+./boost.py ../data/train.csv --seed=42 -m best.model
+--infer=../data/test.csv
+\end{lstlisting}
+
+
+\subsection{Bayesian Gaussian mixture model}
+\subsubsection{Opis metody}
+
+Bayesian model polega na wykorzystaniu twierdzenia Bayesa do stworzenia klasyfikatora, którego model został wyprowadzony przy użyciu tego twierdzenia. Gaussian mixture model zakłada, że w zbiorze danych istnieje skończona liczba podzbiorów, które mogą zostać przybliżone rozkładem Gaussa. Do obliczeń została wykorzystana implementacja z pakietu sklearn.mixture.GaussianMixture. \\
+Problem, który rozwiązujemy ma 2 niezbalansowane klasy i 200 cech, które zakładamy, że są niezależne względem siebie. Modelujemy $Y$ jako Bernoulli, gdzie 0 - fałsz, 1 - prawda, podczas gdy cechy $X_{0}, X_{1}, ... , X_{199}$ są ciągłymi zmiennymi losowymi. Teraz trzeba przypomnieć twierdzenia Bayesa:
+\begin{equation}
+    p_{Y|X_0,X_1,\ldots,X_{199}}(y|x_0,x_1,\ldots,x_{199})=\frac{p_Y(y)\prod_{i=0}^{199}f_{X_i|Y}(x_i|y)}{\sum_{y'=0}^1p_Y(y')\prod_{i=0}^{199}f_{X_i|Y}(x_i|y')}
+\end{equation}
+gdzie $p_Y(y)$ będzie proporcją między 2 klasami, a prawdopodobieństwo $f_{X_i|Y}(x_i|y)$ będzie uzyskane przy pomocy Gaussian mixture model.
+
+\subsubsection{Trenowanie modelu}
+Użycie sklearn.mixture.GaussianMixture pozostawia nam dopasowanie 2 hiperparametrów:
+\begin{itemize}
+    \item \textbf{n\_components} - liczba składowych rozkładów normalnych
+    \item \textbf{reg\_covar} - parametr regulujący dodawany do diagonali macierzy kowariancji.
+\end{itemize}
+
+Były sprawdzane różne wartości parametrów metodą hyperparameter grid search. Do porównywania wyników dla poszczególnych parametrów została użyta miara AUC-ROC dla zbioru walidacyjnego i treningowego. Poniżej przedstawione są najlepsze wyniki przeszukiwania parametrów (pod względem wyniku dla zbioru walidacyjnego):
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+        component\_number & reg\_covar & AUC\_train & AUC\_val \\ \hline
+        15 & 0.01 & 0.9105 & 0.9006 \\ \hline 
+        10 & 0.01 & 0.9091 & 0.8997 \\ \hline 
+        20 & 0.01 & 0.9112 & 0.8994 \\ \hline 
+        5 & 0.01 & 0.9052 & 0.8990 \\ \hline 
+        5 & 0.0001 & 0.8971 & 0.8889 \\ \hline 
+    \end{tabular}
+    \caption{AUC treningowe i walidacyjne dla różnych wartości współczynników component\_number i reg\_covar}
+    \label{tab:gaussian_mix_gridsearch}
+\end{table}
+
+Najlepiej sprawdza się tutaj reg\_covar o wartości około 0.01 i component\_number o wartości 15, co daje wynik 0.9006 dla zbioru walidacyjnego. 
+
+Ze względu na duże niezbalansowanie klas, zostały także przeprowadzone eksperymenty po przeprowadzeniu oversamplingu, a także dla danych po użyciu undersamplingu. Do obydwu technik został zastosowany pakiet \textit{imblearn}.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+        component\_number & reg\_covar & AUC\_train & AUC\_val \\ \hline
+        15 & 0.01 & 0.9137 & 0.9053 \\ \hline 
+        20 & 0.01 & 0.9148 & 0.9053 \\ \hline 
+        10 & 0.01 & 0.9118 & 0.9048 \\ \hline 
+        5 & 0.01 & 0.9063 & 0.9023 \\ \hline 
+        5 & 0.001 & 0.9021 & 0.8989 \\ \hline 
+    \end{tabular}
+    \caption{AUC treningowe i walidacyjne dla różnych wartości współczynników component\_number i reg\_covar po undersamplingu}
+    \label{tab:gaussian_mix_gridsearch_undersampling}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+        component\_number & reg\_covar & AUC\_train & AUC\_val \\ \hline
+        20 & 0.01 & 0.9137 & 0.9104 \\ \hline 
+        15 & 0.01 & 0.9137 & 0.9101 \\ \hline 
+        10 & 0.01 & 0.9137 & 0.9087 \\ \hline 
+        5 & 0.01 & 0.9137 & 0.9054 \\ \hline 
+        5 & 0.0001 & 0.9137 & 0.8959 \\ \hline 
+    \end{tabular}
+    \caption{AUC treningowe i walidacyjne dla różnych wartości współczynników component\_number i reg\_covar po oversamplingu}
+    \label{tab:gaussian_mix_gridsearch_oversampling}
+\end{table}
+
+Na podstawie powyższych tabel możemy stwierdzić, że najlepiej ustawić reg\_covar na wartość około 0.01 we wszystkich przypadkach. Component\_number zaś wacha się pomiędzy 15 a 20, możliwe że najlepsza byłaby jakaś wartość pomiędzy. Zarówno po oversamplingu jak i po undersamplingu, wyniki metody są lepsze w przypadku zbioru walidacyjnego. Najlepsze wyniki osiągane są po oversamplingu, jednak nie są dużo lepsze niż po undersamplingu, więc nie jest pewne, że modele wytrenowane na zbiorze po oversamplingu osiągną lepsze rezultaty także w przypadku konkursowego zbioru danych. 
+
+\subsubsection{Wyniki}
+
+Po zamieszczeniu wyników z najlepiej radzących sobie zestawów parametrów zarówno dla modeli wytrenowanych po oversamplingu jak i undersamplingu danych, oraz bez korzystania z żadnego z nich, najlepsze wyniki w konkursie osiągnęte zostały po użyciu oversamplingu osiągając wynik 0.89251, trochę gorszy niż wynik, który został osiągnięty dla zbioru walidacyjnego. Dało to pozycję 5656 z 8802 uczestników konkursu.
+
+\subsubsection{Instrukcja uruchomienia}
+
+Bayesian Gaussian mixture model został zaimplementowany w Pythonie i można go uruchomić jako aplikację konsolową:
+
+\begin{lstlisting}
+gaussian_mixture.py [-h] [--train_data=PATH] [--data=PATH] [--seed=SEED]
+[--data_balancing=O/U] [--is_only_training=true/false] [--reg_covar=FLOAT] [--is_grid_search=true/false] [--output=PATH]
+\end{lstlisting}
+
+Znaczenie parametrów:
+
+\begin{itemize}
+    \item -h: wyświetlenie pomocy
+    \item train{\_}data: ścieżka do pliku csv w którym znajdują się dane treningowe. Domyślnie: ../data/train.csv
+    \item data: ścieżka do pliku csv w którym znajdują się dane. Domyślnie: ../data/test.csv
+    \item --seed: seed dla generatora liczb losowych, używany aby mieć powtarzalne wyniki. Domyślnie: 12415.
+    \item data{\_}balancing: czy używany będzie oversampling (O) lub undersampling (U). Domyślnie: O
+    \item is{\_}only{\_}training: ustawiony na true, jeśli ma zostać wykonany tylko trening modelu. Domyślnie: false
+    \item component{\_}number: liczba komponentów gaussian mixture. Domyślnie: 5
+    \item reg{\_}covar: nieujemny parametr regulujący dodawany do diagonali macierzy kowariancji. Domyślnie: 1e-2
+    \item is{\_}grid{\_}search: jeśli jest ustawiony na true, wykonuje grid search dla stałych parametrów component{\_}number i reg{\_}covar. Domyślnie: false
+    \item output: ścieżka do pliku wyjściowego. Domyślnie: gauss{\_}mix{\_}output.csv
+\end{itemize}
+
+\noindent \textbf{Przykładowe wywołania:}\\
+
+\noindent Trening wraz z predykcją:
+\begin{lstlisting}
+./gaussian_mixture.py --seed=125152 --train_data=../data/train.csv --data=../data/test.csv --data_balancing=o --component_number=3 --reg_covar=1e-3 --output=output.csv
+\end{lstlisting}
+
+\noindent Grid search:
+\begin{lstlisting}
+./gaussian_mixture.py--train_data=../data/train.csv --data=../data/test.csv --data_balancing=o --component_number=7 --reg_covar=1e-2 --is_grid_search True --output=output.csv
+\end{lstlisting}
+
+
+\section{Wyniki i podsumowanie}
 
 \newpage
 
@@ -546,6 +954,10 @@ Ze względu na niezrównoważenie klas do modelu wprowadzono oversampling. Poleg
 
 \bibitem{santanderkaggle}
 \url{https://www.kaggle.com/c/santander-customer-transaction-prediction}
+\bibitem{xgboost}
+\url{https://github.com/dmlc/xgboost}
+\bibitem{gradboosting}
+\url{https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d}
 
 \bibitem{exampple}
   John Example,
