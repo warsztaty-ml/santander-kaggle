@@ -475,6 +475,8 @@ Sposób oceny modeli został narzucony przez organizatorów konkursu. Ze względ
 
 \section{Modele klasyczne}
 
+\section{Modele klasyczne}
+
 \subsection{Regresja SVM}
 \subsubsection{Opis metody}
 Jednym z modeli dla których podjęto próbę rozwiązania problemu są wektory SVM. Niestety dla danych treningowych, których jest około $200$ tys. przeprowadzenie obliczeń jest praktycznie niemożliwe. Dane zostały zredukowane wykorzystując metodę \textit{undersampling} dzięki której uzyskano koło $40$ tys danych i dodatkowo zachowano balans pomiędzy danymi z odpowiedziami 0 i 1. Dodatkowo dane treningowe i testowe są przeskalowane do przedziału $[0, 1]$, aby przyspieszyć uczenie.
@@ -581,14 +583,17 @@ Wczytywanie danych
 Przeprowadzenie preprocessingu danych trenigowych
 Liczba danych:  18000  w tym: [(0, 16242), (1, 1758)]
 Liczba danych po zastosowaniu Undersampled: 3516  w tym: [(0, 1758), (1, 1758)]
-Rozpoczęcie procesu nauki
+Rozpoczecie procesu nauki
 Przeprowadzenie preprocessingu danych testowych
-Rozpoczęcie procesu testowania
+Rozpoczecie procesu testowania
 Przeprowadzenie postprocessingu danych testowych
 Otrzymany rezultat: 0.8546027178022656
 \end{lstlisting}
 
+
 \subsection{Sieć neuronowa}
+
+\subsubsection{Opis metody}
 Użycie standardowego modelu wielowarstwowej sieci perceptronowej nie przyniosło zadowalających rezultatów. Uzyskany został wynik około 0.85. Okazało się, że użycie konwolucyjnej sieci neuronowej znacznie poprawiło wynik. Sama zmiana modelu sieci pozwoliła na osiągnięcie rezultatu 0.892. Spróbujmy wyjaśnić skąd ta różnica. Poniżej zamieszczony został dokładny model sieci.
 
 \begin{lstlisting}[caption={Model sieci CNN}, captionpos=b]
@@ -611,6 +616,20 @@ Zobaczmy, że pierwsza warstwa ma zaledwie 64 parametry (32 filtry rozmiaru 1x1 
 Konwolucja pozwoliła na działanie na każdej z cech niezależnie (przed zastosowaniem warstwy Flatten). Jest to skuteczne, ponieważ de facto nastąpiła próba odzyskania danych oryginalnych przed wstępnym przetworzeniem przez Santander i możliwość podziałania na danych bardziej skorelowanych. 
 
 Ze względu na niezrównoważenie klas do modelu wprowadzono oversampling. Polegało to na nadaniu wag klasom. Taką obsługę oversamplingu dostarcza \textit{keras}, co ostatecznie okazało się delikatnie skuteczniejsze niż samemu generowanie nowych danych. Ponadto zastosowano komitet 30 sieci. Jako rezultat końcowy były brane średnie arytmetyczne z uzyskanych rezultatów sieci. Ostateczny wynik w prywatnym rankingu zawodów wyniósł \textbf{0.89823}, co pozwoliło na zajęcie miejsca w top 49\% najlepszych wyników. Z samego modelu sieci już niewiele dałoby się poprawić. Na uzyskanie lepszego wyniku (powyżej 0.9) potrzebna byłaby dogłębna analiza danych i sensowna rozbudowa wektora cech (feature engineering) z 200 nawet i do 1000. Zajęcie czołowego miejsca w konkursie zależało głównie od jakości EDA.
+
+\subsubsection{Instrukcja uruchomienia}
+Sieć neuronowa została zaimplementowana w Pythonie i można ją uruchomić jako aplikację konsolową:
+\begin{lstlisting}
+cnn.py [-h] [--train_data=PATH] [--data=PATH] [--output=PATH]
+\end{lstlisting}
+Znaczenie parametrów:
+
+\begin{itemize}
+    \item -h: wyświetlenie pomocy
+    \item train{\_}data: ścieżka do pliku csv w którym znajdują się dane treningowe. Domyślnie: ../data/train.csv
+    \item data: ścieżka do pliku csv w którym znajdują się dane. Domyślnie: ../data/test.csv
+    \item output: ścieżka do pliku wyjściowego. Domyślnie: cnnx{\_}submission.csv
+\end{itemize}
 
 \section{Modele niekonwencjonalne}
 
@@ -995,6 +1014,8 @@ Znaczenie parametrów:
 \url{https://github.com/dmlc/xgboost}
 \bibitem{gradboosting}
 \url{https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d}
+\bibitem{sklearn}
+\url{https://scikit-learn.org}
 
 \bibitem{exampple}
   John Example,
