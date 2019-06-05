@@ -131,6 +131,7 @@ def main():
         (description='Performs binary classification using convolutional neural network')
     parser.add_argument('--train_data', help='Input train data csv', default='../data/train.csv', type=str)
     parser.add_argument('--data', help='Input data csv', default='../data/test.csv', type=str)
+    parser.add_argument('--output', help='output path', default='cnn_submission.csv', type=str)
     print("Wczytywanie danych treningowych")
     args = parser.parse_args()
     train = pd.read_csv(args.train_data)
@@ -146,7 +147,7 @@ def main():
     df_test = pd.read_csv(args.data)
     submission = test_data(df_test)
     print("Zapis odpowiedzi do pliku")
-    submission.to_csv('submission.csv', index=False)
+    submission.to_csv(args.output, index=False)
 
 
 if __name__ == '__main__':
