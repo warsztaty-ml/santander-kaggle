@@ -476,8 +476,10 @@ Sposób oceny modeli został narzucony przez organizatorów konkursu. Ze względ
 \section{Modele klasyczne}
 
 \subsection{Regresja SVM}
-Jednym z modeli dla których podjęto próbę rozwiązania problemu są wektory SVM. Niestety dla danych treningowych, których jest około $200$ tys. przeprowadzenie obliczeń jest praktycznie niemożliwe. Dane zostały zredukowane wykorzystując metodę \textit{undersampling} dzięki której uzyskano koło $40$ tys danych i dodatkowo zachowano balans pomiędzy danymi z odpowiedziami 0 i 1.
+\subsubsection{Opis metody}
+Jednym z modeli dla których podjęto próbę rozwiązania problemu są wektory SVM. Niestety dla danych treningowych, których jest około $200$ tys. przeprowadzenie obliczeń jest praktycznie niemożliwe. Dane zostały zredukowane wykorzystując metodę \textit{undersampling} dzięki której uzyskano koło $40$ tys danych i dodatkowo zachowano balans pomiędzy danymi z odpowiedziami 0 i 1. Dodatkowo dane treningowe i testowe są przeskalowane do przedziału $[0, 1]$, aby przyspieszyć uczenie.
 
+\subsubsection{Testy}
 Na samym początku wykonano testy dla różnych kerneli. Wyniki tych testów zostały przedstawione w tabeli nr \ref{tab:svm_kernels}. Dla funkcji jądrowej \textit{rbf} metoda zwróciła najlepszy wynik.
 \begin{table}[H]
     \centering
@@ -499,7 +501,7 @@ Na samym początku wykonano testy dla różnych kerneli. Wyniki tych testów zos
     \label{tab:svm_kernels}
 \end{table}
 
-W kolejnych testach sprawdzano działanie modelu zmieniając parametry: eps, C i gamma. Najlepszy wynik jaki udało się uzyskać to 0.8841. Końcowy wynik dla tego modelu jaki uzyskano na koniec konkursu to 0.88079.
+W kolejnych testach sprawdzano działanie modelu zmieniając parametry: eps, C i gamma. Wyniki zostały przedstawione w tabeli nr \ref{tab:rgf_test} Najlepszy wynik jaki udało się uzyskać to 0.8841. Końcowy wynik dla tego modelu jaki uzyskano na koniec konkursu to 0.88079.
 
 \begin{table}[H]
     \centering
@@ -548,8 +550,43 @@ W kolejnych testach sprawdzano działanie modelu zmieniając parametry: eps, C i
     \hline
     \end{tabular}
     \caption{Wyniki modelów SCV dla kernela \textit{rbf} i różnych parametrów}
-    \label{tab:my_label}
+    \label{tab:rgf_test}
 \end{table}
+
+\subsubsection{Instrukcja uruchomienia SVM}
+
+SVM został zaimplementowany w Pythonie i można go uruchomić jako aplikację konsolową:
+
+\begin{lstlisting}
+svr.py [-h] [--kernel KERNEL] [--eps EPS] [--gamma GAMMA] 
+		[--c C] [--wsp WSP]
+\end{lstlisting}
+
+Znaczenie parametrów:
+
+\begin{itemize}
+    \item -h: wyświetlenie pomocy
+    \item --kernel: typ kernela wykorzystywanego w algorytmie np.: 'rbf', 'poly', 'linear', 'sigmoid',
+    \item --eps: epsilon wykorzystywany w algorytmie SVM,
+    \item --gamma: gamma wykorzystywana w algorytmie SVM,
+    \item --c: parametr C wykorzystywany w algorytmie SVM,
+    \item --wsp: ilość danych użytych do testów wsp $\in [0,1]$.
+\end{itemize}
+\newpage
+Przykład wywołania:
+\begin{lstlisting}
+python svr.py --wsp=0.1
+Namespace(c=1, eps=0.1, gamma='auto', kernel='rbf', wsp=0.1)
+Wczytywanie danych
+Przeprowadzenie preprocessingu danych trenigowych
+Liczba danych:  18000  w tym: [(0, 16242), (1, 1758)]
+Liczba danych po zastosowaniu Undersampled: 3516  w tym: [(0, 1758), (1, 1758)]
+Rozpoczęcie procesu nauki
+Przeprowadzenie preprocessingu danych testowych
+Rozpoczęcie procesu testowania
+Przeprowadzenie postprocessingu danych testowych
+Otrzymany rezultat: 0.8546027178022656
+\end{lstlisting}
 
 \subsection{Sieć neuronowa}
 Użycie standardowego modelu wielowarstwowej sieci perceptronowej nie przyniosło zadowalających rezultatów. Uzyskany został wynik około 0.85. Okazało się, że użycie konwolucyjnej sieci neuronowej znacznie poprawiło wynik. Sama zmiana modelu sieci pozwoliła na osiągnięcie rezultatu 0.892. Spróbujmy wyjaśnić skąd ta różnica. Poniżej zamieszczony został dokładny model sieci.
