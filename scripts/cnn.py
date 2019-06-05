@@ -19,6 +19,7 @@ from keras.callbacks import Callback, EarlyStopping
 from keras import metrics
 from keras import losses
 from keras import activations
+import argparse
 
 BATCH_SIZE = 128
 EPOCH_NUMBER = 100
@@ -29,14 +30,9 @@ NUMBER_NETWORKS = 30
 # For example, running this (by clicking run or pressing Shift+Enter) will list the files in the input directory
 
 import os
-
-print(os.listdir("../input"))
 import psutil
 
 process = psutil.Process(os.getpid())
-
-# Any results you write to the current directory are saved as output.
-INPUT_DIR = "../input/"
 
 models = list()
 scaler = StandardScaler()
@@ -60,9 +56,9 @@ def prepare_network(input_size):
         model.add(BatchNormalization())
         model.add(Flatten())
         model.add(Dense(1, activation=activations.sigmoid))
-        print(model.summary())
         model.compile(optimizer='adam', loss=losses.binary_crossentropy, metrics=[auc_roc])
         models.append(model)
+    print(models[0].summary())
 
 
 def network_train(model, x_train, y_train, x_valid, y_valid):
@@ -131,8 +127,13 @@ def test_data(test):
 
 
 def main():
+    parser = argparse.ArgumentParser \
+        (description='Performs binary classification using convolutional neural network')
+    parser.add_argument('--train_data', help='Input train data csv', default='../data/train.csv', type=str)
+    parser.add_argument('--data', help='Input data csv', default='../data/test.csv', type=str)
     print("Wczytywanie danych treningowych")
-    train = pd.read_csv(INPUT_DIR + 'train.csv')
+    args = parser.parse_args()
+    train = pd.read_csv(args.train_data)
     df_train = train
     X = df_train.iloc[:, 2:]
     Y = df_train['target']
@@ -142,7 +143,7 @@ def main():
     train_data(df_train)
     del train
     print("Rozpoczęcie procesu testowania")
-    df_test = pd.read_csv(INPUT_DIR + 'test.csv')
+    df_test = pd.read_csv(args.data)
     submission = test_data(df_test)
     print("Zapis odpowiedzi do pliku")
     submission.to_csv('submission.csv', index=False)
